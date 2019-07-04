@@ -8,7 +8,7 @@
     "build": "babel ./build ./src -s",
     "clean": "rm -rf ./build",
     "test": "nyc mocha --require @babel/register --require @babel/polyfill src/tests --exit",
-    "coverage": "nyc npm test && nyc report --reporter=text-lcov > coverage.lcov ./node_modules/.bin/codecov",
+    "report-coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
     "coveralls": "nyc npm test && nyc report --reporter=text-lcov --reporter=text-html | coveralls"
   },
   "dependencies": {
