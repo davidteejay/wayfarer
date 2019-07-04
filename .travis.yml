@@ -18,5 +18,5 @@ env:
     - JWT_SECRET=wayfarersecretkey
 script:
   - npm run test
-after_success
+after_success:
   - npm run coverage
