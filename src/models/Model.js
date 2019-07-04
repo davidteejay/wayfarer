@@ -10,6 +10,11 @@ export default class Model {
     this.pool = new Pool();
 
     Model.logger(`Our table is ${this.table}`);
+
+    this.pool.on('connect', () => {
+      Model.logger('DB Connected');
+    });
+
     this.pool.on('error', (err) => {
       Model.logger(`An error occurred: ${err}`);
       process.exit(-1);
