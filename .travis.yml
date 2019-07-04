@@ -1,9 +1,22 @@
 language: node_js
 node_js:
-- "stable"
+  - "stable"
 cache:
   directories:
-  - "node_modules"
+    - "node_modules"
+install:
+  - "npm install"
+env:
+  global:
+    - PGHOST=35.188.116.232
+    - PGUSER=chii
+    - PGDATABASE=wayfarer
+    - PGPASSWORD=Brain.box8
+    - PGPORT=5432
+
+    - PORT=5000
+    - JWT_SECRET=wayfarersecretkey
 script:
-- npm run test
-- npm run report-coverage
+  - npm run test
+after_success
+  - npm run coverage

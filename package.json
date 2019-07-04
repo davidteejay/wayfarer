@@ -5,11 +5,13 @@
   "scripts": {
     "start": "node ./build/app.js",
     "dev": "DEBUG=wayfarer:* nodemon --exec babel-node ./src/app.js",
-    "build": "babel ./build ./src -s",
+    "build": "rm -rf ./build && babel ./build ./src -s",
     "clean": "rm -rf ./build",
     "test": "nyc mocha --require @babel/register --require @babel/polyfill src/tests --exit",
-    "report-coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
-    "coveralls": "nyc npm test && nyc report --reporter=text-lcov --reporter=text-html | coveralls"
+    "generate-lcov": "nyc report --reporter=text-lcov > lcov.info",
+    "coveralls-coverage": "coveralls < lcov.info",
+    "codeclimate-coverage": "codeclimate-test-reporter < lcov.info",
+    "coverage": "nyc npm test && npm run generate-lcov && npm run coveralls-coverage && npm run codeclimate-coverage"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -29,7 +31,9 @@
     "@babel/register": "^7.4.4",
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
+    "codeclimate-test-reporter": "^0.5.1",
     "codecov": "^3.5.0",
+    "coveralls": "^3.0.4",
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.2.0",
     "eslint-plugin-import": "^2.18.0",
