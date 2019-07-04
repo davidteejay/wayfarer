@@ -13,9 +13,10 @@ env:
     - PGDATABASE=wayfarer
     - PGPASSWORD=Brain.box8
     - PGPORT=5432
-
+    - NODE_ENV=test
     - PORT=5000
     - JWT_SECRET=wayfarersecretkey
+    - CODECLIMATE_REPO_TOKEN=b06c619dc94c3b4e1f5c8a6dc056cdb10eb088a3ee7061cc701f7c106bd85848
 script:
   - npm run test
 after_success:
