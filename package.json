@@ -1,0 +1,39 @@
+{
+  "name": "wayfarer",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./build/app.js",
+    "dev": "DEBUG=wayfarer:* nodemon --exec babel-node ./src/app.js",
+    "build": "babel ./build ./src -s",
+    "clean": "rm -rf ./build",
+    "test": "nyc mocha --require @babel/register --require @babel/polyfill src/tests --exit",
+    "coverage": "nyc npm test && nyc report --reporter=text-lcov > coverage.lcov ./node_modules/.bin/codecov",
+    "coveralls": "nyc npm test && nyc report --reporter=text-lcov --reporter=text-html | coveralls"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "dotenv": "^8.0.0",
+    "express": "~4.16.1",
+    "jsonwebtoken": "^8.5.1",
+    "morgan": "^1.9.1",
+    "pg": "^7.11.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.5.0",
+    "@babel/core": "^7.5.0",
+    "@babel/node": "^7.5.0",
+    "@babel/polyfill": "^7.4.4",
+    "@babel/preset-env": "^7.5.0",
+    "@babel/register": "^7.4.4",
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "codecov": "^3.5.0",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.2.0",
+    "eslint-plugin-import": "^2.18.0",
+    "mocha": "^6.1.4",
+    "nyc": "^14.1.1"
+  }
+}

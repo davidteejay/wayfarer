@@ -1,0 +1,11 @@
+CREATE DATABASE wayfarer;
+USE wayfarer;
+
+CREATE TABLE users IF NOT EXISTS (
+  id SERIAL PRIMARY KEY,
+  email VARCHAR NOT NULL UNIQUE,
+  first_name VARCHAR NOT NULL,
+  last_name VARCHAR NOT NULL, 
+  password VARCHAR NOT NULL,
+  is_admin BOOLEAN NOT NULL DEFAULT FALSE
+);
