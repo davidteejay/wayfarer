@@ -1,0 +1,97 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Wayfarer API Documentation",
+    "version": "1.0.0",
+    "description": "Documentation to test the endpoints for the wayfarer API"
+  },
+  "host": "localhost:5000",
+  "basePath": "/api/v1",
+  "securityDefinitions": {
+    "access-token": {
+      "type": "apiKey",
+      "name": "access-token",
+      "in": "header",
+      "authorizationUrl": "http://localhost:5000/api/v1/auth/verify"
+    }
+  },
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "paths": {
+    "/users/": {
+      "get": {
+        "tags": [
+          "Get Users"
+        ],
+        "summary": "Get All Users in the Database",
+        "security": {
+          "access-token": []
+        },
+        "consumes": "application/json",
+        "produces": "application/json",
+        "content": "application/json",
+        "responses": {
+          "200": {
+            "description": "All Users Fetched",
+            "schema": {
+              "$ref": "#/definitions/Users"
+            }
+          },
+          "401": {
+            "description": "No or Invalid Auth Token",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Users": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "properties": {
+              "id": {
+                "type": "number"
+              },
+              "first_name": {
+                "type": "string"
+              },
+              "last_name": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string"
+              },
+              "is_admin": {
+                "type": "boolean"
+              }
+            }
+          }
+        },
+        "status": {
+          "type": "string"
+        }
+      }
+    },
+    "Error": {
+      "type": "object",
+      "properties": {
+        "error": "string",
+        "status": "string"
+      }
+    }
+  }
+}

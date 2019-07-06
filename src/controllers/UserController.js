@@ -6,8 +6,8 @@ const Users = new Model('users');
 export default class UserController {
   static async getAllUsers(req, res) {
     try {
-      return res.json({
-        data: await Users.select(),
+      return res.status(200).json({
+        data: await Users.select('id, first_name, last_name, email, is_admin'),
         status: 'success',
       });
     } catch (err) {
