@@ -1,5 +1,5 @@
 import Model from '../models/Model';
-import { serverError } from '../helpers/errorHandler';
+import returnError from '../helpers/errorHandler';
 
 const Users = new Model('users');
 
@@ -11,7 +11,7 @@ export default class UserController {
         status: 'success',
       });
     } catch (err) {
-      return serverError(req, res, err);
+      return returnError(res, err.message, 500);
     }
   }
 }

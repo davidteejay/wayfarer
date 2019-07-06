@@ -10,17 +10,13 @@ export default class Model {
     this.pool = new Pool();
 
     this.pool.on('connect', () => {
-      Model.logger('DB Connected');
+      debug('wayfarer:pool')('DB Connected');
     });
 
     this.pool.on('error', (err) => {
-      Model.logger(`An error occurred: ${err}`);
+      debug('wayfarer:pool')(`An error occurred: ${err}`);
       process.exit(-1);
     });
-  }
-
-  static logger(message) {
-    return debug('wayfarer:pool')(message);
   }
 
   async select(columns = '*', clause = '') {

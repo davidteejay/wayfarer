@@ -2,7 +2,7 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 
-import { serverError, invalidTokenError, noTokenError } from '../helpers/errorHandler';
+import returnError from '../helpers/errorHandler';
 
 dotenv.config();
 const { JWT_SECRET } = process.env;
@@ -18,7 +18,7 @@ export default class AuthMiddleware {
 
       return next();
     } catch (err) {
-      return serverError(req, res, err);
+      return returnError(res, err.message, 500);
     }
   }
 
@@ -29,16 +29,16 @@ export default class AuthMiddleware {
       if (token) {
         await jwt.verify(token, JWT_SECRET, (err, decoded) => {
           if (err) {
-            return invalidTokenError(req, res);
+            return returnError(res, 'Invalid Token', 401);
           }
 
           return next();
         });
       }
 
-      return noTokenError(req, res);
+      return returnError(res, 'Token Not Found', 401);
     } catch (err) {
-      return serverError(req, res, err);
+      return returnError(res, err.message, 500);
     }
   }
 }

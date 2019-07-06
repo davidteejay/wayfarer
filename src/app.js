@@ -8,7 +8,7 @@ import path from 'path';
 
 import swaggerDoc from './config/swagger.json';
 import indexRoutes from './routes/indexRoutes';
-import { inCorrectRouteError } from './helpers/errorHandler';
+import returnError from './helpers/errorHandler';
 
 dotenv.config();
 
@@ -25,7 +25,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerDoc));
 app.use('/api/v1/', indexRoutes(router));
-app.use('/*', (req, res) => inCorrectRouteError(req, res));
+app.use('/*', (req, res) => returnError(res, 'Incorrect Route', 404));
 
 app.listen(port, () => deBug(`Listening on port ${port}`));
 
