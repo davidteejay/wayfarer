@@ -32,4 +32,12 @@ export default class UserController {
       return returnError(res, err.message, 500);
     }
   }
+
+  static async signUp(req, res) {
+    try {
+      
+    } catch (err) {
+      return returnError(res, err.message, 500);
+    }
+  }
 }

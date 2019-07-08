@@ -8,21 +8,6 @@ chai.use(chaiHttp);
 chai.should();
 
 describe('Users', () => {
-  describe('GET /', () => {
-    it('should get all users', (done) => {
-      chai
-        .request(app)
-        .get('/api/v1/users/')
-        .end((err, res) => {
-          res.body.should.be.a('object');
-          res.body.should.have.property('status');
-          res.body.should.have.property('data');
-          res.body.data.should.be.a('array');
-          done();
-        });
-    });
-  });
-
   describe('POST /login', () => {
     it('should log the user in', (done) => {
       const user = {
