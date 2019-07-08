@@ -60,9 +60,16 @@
           "Users"
         ],
         "summary": "Allows a user to login",
-        "security": {
-          "access-token": []
-        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": "true",
+            "schema": {
+              "$ref": "#/definitions/LoginData"
+            }
+          }
+        ],
         "consumes": "application/json",
         "produces": "application/json",
         "content": "application/json",
@@ -75,6 +82,47 @@
           },
           "404": {
             "description": "Invalid Email or Password",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/users/signup": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Allows a user to signup",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": "true",
+            "schema": {
+              "$ref": "#/definitions/SignupData"
+            }
+          }
+        ],
+        "consumes": "application/json",
+        "produces": "application/json",
+        "content": "application/json",
+        "responses": {
+          "200": {
+            "description": "Signup Successful",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "401": {
+            "description": "Email already exists",
             "schema": {
               "$ref": "#/definitions/Error"
             }
@@ -145,6 +193,34 @@
               "type": "boolean"
             }
           }
+        }
+      }
+    },
+    "SignupData": {
+      "type": "object",
+      "properties": {
+        "first_name": {
+          "type": "string"
+        },
+        "last_name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "LoginData": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
         }
       }
     },
