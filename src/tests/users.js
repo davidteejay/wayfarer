@@ -59,7 +59,7 @@ describe('Users', () => {
       const user = {
         first_name: 'Chibuokem',
         last_name: 'Onyekwelu',
-        email: 'chibuokem_tolu@hotmail.com',
+        email: `chibuokem_${(Math.random() * 1000).toFixed(0)}@hotmail.com`,
         password: 'chibuokem_tolu',
       };
 
