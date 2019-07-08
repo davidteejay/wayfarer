@@ -14,4 +14,22 @@ export default class UserController {
       return returnError(res, err.message, 500);
     }
   }
+
+  static async signIn(req, res) {
+    try {
+      const { email, password } = req.body;
+      const login = await Users.select('*', `WHERE email = '${email}' AND password = '${password}'`);
+
+      if (login.length > 0) {
+        return res.status(200).json({
+          data: login[0],
+          status: 'success',
+        });
+      }
+
+      return returnError(res, 'Email or Password is incorrect', 404);
+    } catch (err) {
+      return returnError(res, err.message, 500);
+    }
+  }
 }

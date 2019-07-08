@@ -1,5 +1,4 @@
 import { Pool } from 'pg';
-import debug from 'debug';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -8,15 +7,6 @@ export default class Model {
   constructor(table) {
     this.table = table;
     this.pool = new Pool();
-
-    this.pool.on('connect', () => {
-      debug('wayfarer:pool')('DB Connected');
-    });
-
-    this.pool.on('error', (err) => {
-      debug('wayfarer:pool')(`An error occurred: ${err}`);
-      process.exit(-1);
-    });
   }
 
   async select(columns = '*', clause = '') {

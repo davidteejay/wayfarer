@@ -28,5 +28,5 @@ To configure the project, create a `.env` file and add `PGHOST`, `PGUSER`, `PGDA
 
 ## Links
 
-- Project Homepage: [https://github.com/davidteejay/wayfarer.git](https://travis-ci.org/davidteejay/wayfarer)
-- Repository: [https://github.com/davidteejay/wayfarer.git](https://travis-ci.org/davidteejay/wayfarer)
+- Project Homepage: Link to docs will be here
+- Repository: [https://github.com/davidteejay/wayfarer.git](https://github.com/davidteejay/wayfarer.git)
