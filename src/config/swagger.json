@@ -23,7 +23,7 @@
     "/users/": {
       "get": {
         "tags": [
-          "Get Users"
+          "Users"
         ],
         "summary": "Get All Users in the Database",
         "security": {
@@ -41,6 +41,40 @@
           },
           "401": {
             "description": "No or Invalid Auth Token",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/users/login": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Allows a user to login",
+        "security": {
+          "access-token": []
+        },
+        "consumes": "application/json",
+        "produces": "application/json",
+        "content": "application/json",
+        "responses": {
+          "200": {
+            "description": "Login Successful",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "404": {
+            "description": "Invalid Email or Password",
             "schema": {
               "$ref": "#/definitions/Error"
             }
@@ -86,11 +120,43 @@
         }
       }
     },
+    "User": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "number"
+            },
+            "first_name": {
+              "type": "string"
+            },
+            "last_name": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            },
+            "is_admin": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
     "Error": {
       "type": "object",
       "properties": {
-        "error": "string",
-        "status": "string"
+        "error": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        }
       }
     }
   }
