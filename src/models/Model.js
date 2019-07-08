@@ -20,7 +20,7 @@ export default class Model {
     const query = `INSERT INTO ${this.table} (${columns}) VALUES (${values})`;
 
     const data = await this.pool.query(query);
-    return data.rows;
+    return data;
   }
 
   async update(columns, clause) {

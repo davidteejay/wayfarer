@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import Model from '../models/Model';
 import returnError from '../helpers/errorHandler';
 
@@ -28,6 +29,25 @@ export default class UserController {
       }
 
       return returnError(res, 'Email or Password is incorrect', 404);
+    } catch (err) {
+      return returnError(res, err.message, 500);
+    }
+  }
+
+  static async signUp(req, res) {
+    try {
+      const {
+        first_name, last_name, email, password,
+      } = req.body;
+
+      await Users.insert('first_name, last_name, email, password', `'${first_name}', '${last_name}', '${email}', '${password}'`);
+
+      const data = await Users.select('*', `WHERE email = '${email}'`);
+
+      return res.status(200).json({
+        data: data[0],
+        status: 'success',
+      });
     } catch (err) {
       return returnError(res, err.message, 500);
     }
