@@ -8,9 +8,6 @@ services:
   - postgresql
 install:
   - "npm install"
-postgres:
-  database: wayfarer
-  username: postgres
 before_script:
   - psql -c "CREATE DATABASE wayfarer_test;" -U postgres
   - psql -c "CREATE USER chi WITH PASSWORD null;" -U postgres
