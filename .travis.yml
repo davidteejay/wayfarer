@@ -6,16 +6,19 @@ cache:
     - "node_modules"
 services:
   - postgresql
-before_script:
-  - psql -c "CREATE DATABASE wayfarer;" -U postgres
-  - psql -d wayfarer -f db.sql -U postgres
 postgres:
   database: wayfarer
   adapter: postgresql
   username: postgres
 install:
   - "npm install"
+before_script:
+  - psql -c "CREATE DATABASE wayfarer;" -U postgres
+  - psql -d wayfarer -f db.sql -U postgres
+  - psql wayfarer postgres
 script:
   - npm run test
+after_script:
+  - psql -c "DROP DATABASE wayfarer;" -U postgres
 after_success:
   - npm run coverage
