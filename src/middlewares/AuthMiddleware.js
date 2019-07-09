@@ -2,7 +2,6 @@
 /* eslint-disable consistent-return */
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
-import debug from 'debug';
 
 import returnError from '../helpers/errorHandler';
 import Model from '../models/Model';
@@ -32,7 +31,6 @@ export default class AuthMiddleware {
 
       if (token) {
         await jwt.verify(token, JWT_SECRET, (err, decoded) => {
-          debug('wayfarer:debug')(decoded);
           if (err || !decoded || !decoded.check) return returnError(res, 'Invalid Token', 401);
 
           return next();

@@ -176,4 +176,123 @@ describe('Trips', () => {
         });
     });
   });
+
+  describe('POST /cancel', () => {
+    it('should cancel a trip', (done) => {
+      const trip = {
+        trip_id: 1,
+        user_id: 1,
+      };
+
+      chai
+        .request(app)
+        .post(`${baseUrl}/cancel`)
+        .set('access-token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGVjayI6dHJ1ZSwiaWF0IjoxNTYyNjY1ODgxLCJleHAiOjE1NjI3MDkwODF9._tCKqBZh9oUFx95PBlRVa93CNOFbuz91ngaU-0r0RNk')
+        .send(trip)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          res.body.should.have.property('status');
+          res.body.should.have.property('data');
+          res.body.data.should.be.a('array');
+          res.body.status.should.be.equal('success');
+          done();
+        });
+    });
+  });
+
+  describe('POST /cancel', () => {
+    it('should not cancel a trip', (done) => {
+      const trip = {
+        trip_id: 1,
+        user_id: 2,
+      };
+
+      chai
+        .request(app)
+        .post(`${baseUrl}/cancel`)
+        .set('access-token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGVjayI6dHJ1ZSwiaWF0IjoxNTYyNjY1ODgxLCJleHAiOjE1NjI3MDkwODF9._tCKqBZh9oUFx95PBlRVa93CNOFbuz91ngaU-0r0RNk')
+        .send(trip)
+        .end((err, res) => {
+          res.should.have.status(401);
+          res.body.should.be.a('object');
+          res.body.should.have.property('status');
+          res.body.status.should.be.equal('error');
+          res.body.should.have.property('error');
+          res.body.error.should.be.equal('Access Denied');
+          done();
+        });
+    });
+  });
+
+  describe('POST /cancel', () => {
+    it('should not cancel a trip', (done) => {
+      const trip = {
+        trip_id: 1,
+        user_id: 1,
+      };
+
+      chai
+        .request(app)
+        .post(`${baseUrl}/cancel`)
+        .send(trip)
+        .end((err, res) => {
+          res.should.have.status(401);
+          res.body.should.be.a('object');
+          res.body.should.have.property('status');
+          res.body.status.should.be.equal('error');
+          res.body.should.have.property('error');
+          res.body.error.should.be.equal('Token Not Found');
+          done();
+        });
+    });
+  });
+
+  describe('POST /cancel', () => {
+    it('should not cancel a trip', (done) => {
+      const trip = {
+        trip_id: 1,
+        user_id: 1,
+      };
+
+      chai
+        .request(app)
+        .post(`${baseUrl}/cancel`)
+        .set('access-token', 'eyJhbGciOiJIUzI1NiIsInR6cCI6IkpXVCJ9.eyJjaGVjayI6dHJ1ZSwiaWF0IjoxNTYyNjY1ODgxLCJleHAiOjE1NjI3MDkwODF9._tCKqBZh9oUFx95PBlRVa93CNOFbuz91ngaU-0r0RAz')
+        .send(trip)
+        .end((err, res) => {
+          res.should.have.status(401);
+          res.body.should.be.a('object');
+          res.body.should.have.property('status');
+          res.body.status.should.be.equal('error');
+          res.body.should.have.property('error');
+          res.body.error.should.be.equal('Invalid Token');
+          done();
+        });
+    });
+  });
+
+  describe('POST /cancel', () => {
+    it('should not cancel a trip', (done) => {
+      const trip = {
+        trip_id: 1000,
+        user_id: 1,
+      };
+
+      chai
+        .request(app)
+        .post(`${baseUrl}/cancel`)
+        .set('access-token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGVjayI6dHJ1ZSwiaWF0IjoxNTYyNjY1ODgxLCJleHAiOjE1NjI3MDkwODF9._tCKqBZh9oUFx95PBlRVa93CNOFbuz91ngaU-0r0RNk')
+        .send(trip)
+        .end((err, res) => {
+          res.should.have.status(404);
+          res.body.should.be.a('object');
+          res.body.should.have.property('status');
+          res.body.status.should.be.equal('error');
+          res.body.should.have.property('error');
+          res.body.error.should.be.equal('Trip does not exist');
+          done();
+        });
+    });
+  });
 });
