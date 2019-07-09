@@ -12,6 +12,7 @@ before_script:
   - psql -c "CREATE DATABASE wayfarer;" -U postgres
   - psql -c "CREATE USER chi WITH PASSWORD null;" -U postgres
   - psql -f db.sql -d wayfarer -U postgres
+  - psql -c "SELECT * FROM BUSES" -U postgres
 script:
   - npm run test
 after_script:
