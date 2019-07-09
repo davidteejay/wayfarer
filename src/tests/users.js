@@ -7,7 +7,7 @@ import app from '../app';
 chai.use(chaiHttp);
 chai.should();
 
-const baseUrl = '/api/v1/users';
+const baseUrl = '/api/v1/auth';
 
 describe('Users', () => {
   describe('POST /login', () => {
@@ -28,6 +28,7 @@ describe('Users', () => {
           res.body.should.have.property('data');
           res.body.data.should.be.a('object');
           res.body.data.should.have.property('id');
+          res.body.data.should.have.property('token');
           done();
         });
     });
@@ -48,36 +49,38 @@ describe('Users', () => {
           res.should.have.status(404);
           res.body.should.be.a('object');
           res.body.should.have.property('status');
+          res.body.status.should.be.equal('error');
           res.body.should.have.property('error');
+          res.body.error.should.be.equal('Email or Password is incorrect');
           done();
         });
     });
   });
 
-  describe('POST /signup', () => {
-    it('should sign the user up', (done) => {
-      const user = {
-        first_name: 'Chibuokem',
-        last_name: 'Onyekwelu',
-        email: `chibuokem_${(Math.random() * 1000).toFixed(0)}@hotmail.com`,
-        password: 'chibuokem_tolu',
-      };
+  // describe('POST /signup', () => {
+  //   it('should sign the user up', (done) => {
+  //     const user = {
+  //       first_name: 'Chibuokem',
+  //       last_name: 'Onyekwelu',
+  //       email: `chibuokem_${(Math.random() * 1000).toFixed(0)}@hotmail.com`,
+  //       password: 'chibuokem_tolu',
+  //     };
 
-      chai
-        .request(app)
-        .post(`${baseUrl}/signup`)
-        .send(user)
-        .end((err, res) => {
-          res.should.have.status(200);
-          res.body.should.be.a('object');
-          res.body.should.have.property('status');
-          res.body.should.have.property('data');
-          res.body.data.should.be.a('object');
-          res.body.data.should.have.property('id');
-          done();
-        });
-    });
-  });
+  //     chai
+  //       .request(app)
+  //       .post(`${baseUrl}/signup`)
+  //       .send(user)
+  //       .end((err, res) => {
+  //         res.should.have.status(200);
+  //         res.body.should.be.a('object');
+  //         res.body.should.have.property('status');
+  //         res.body.should.have.property('data');
+  //         res.body.data.should.be.a('object');
+  //         res.body.data.should.have.property('id');
+  //         done();
+  //       });
+  //   });
+  // });
 
   describe('POST /signup', () => {
     it('should not sign the user up', (done) => {
@@ -96,7 +99,9 @@ describe('Users', () => {
           res.should.have.status(401);
           res.body.should.be.a('object');
           res.body.should.have.property('status');
+          res.body.status.should.be.equal('error');
           res.body.should.have.property('error');
+          res.body.error.should.be.equal('Email already exists');
           done();
         });
     });
@@ -117,7 +122,9 @@ describe('Users', () => {
           res.should.have.status(401);
           res.body.should.be.a('object');
           res.body.should.have.property('status');
+          res.body.status.should.be.equal('error');
           res.body.should.have.property('error');
+          res.body.error.should.be.equal('Incomplete user data');
           done();
         });
     });

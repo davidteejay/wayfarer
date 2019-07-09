@@ -7,7 +7,7 @@
     "dev": "DEBUG=wayfarer:* nodemon --exec babel-node ./src/app.js",
     "build": "rm -rf ./build && babel ./build ./src -s",
     "clean": "rm -rf ./build",
-    "test": "nyc mocha --require @babel/register --require @babel/polyfill src/tests --exit",
+    "test": "nyc mocha --require @babel/register --require @babel/polyfill src/tests --exit --timeout 10000",
     "generate-lcov": "nyc report --reporter=text-lcov > lcov.info",
     "coveralls-coverage": "coveralls < lcov.info",
     "codeclimate-coverage": "codeclimate-test-reporter < lcov.info",
