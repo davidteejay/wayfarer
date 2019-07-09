@@ -24,7 +24,10 @@ The above code will start the project in a development server.
 
 ### Initial Configuration
 
-To configure the project, create a `.env` file and add `PGHOST`, `PGUSER`, `PGDATABASE`, `PGPASSWORD`, `PGPORT`, `PORT`, `JWT_SECRET`
+To configure the project:
+
+- Create a new postgres database, and run the `./db.sql` SQL script
+- Create a `.env` file and add `PGHOST`, `PGUSER`, `PGDATABASE`, `PGPASSWORD`, `PGPORT`, `PORT`, `JWT_SECRET`
 
 ## Links
 

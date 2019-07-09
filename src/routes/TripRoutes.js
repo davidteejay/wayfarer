@@ -4,6 +4,7 @@ import AuthMiddleware from '../middlewares/AuthMiddleware';
 
 export default (router) => {
   router.post('/', AuthMiddleware.validateToken, AuthMiddleware.checkIfUserIsAdmin, TripMiddleware.validateData, TripMiddleware.checkIfBusExists, TripController.addTrip);
+  router.post('/cancel', AuthMiddleware.validateToken, AuthMiddleware.checkIfUserIsAdmin, TripMiddleware.checkIfTripExists, TripController.cancelTrip);
 
   return router;
 };

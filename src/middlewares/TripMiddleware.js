@@ -3,6 +3,7 @@ import Model from '../models/Model';
 import returnError from '../helpers/errorHandler';
 
 const Buses = new Model('buses');
+const Trips = new Model('trips');
 
 export default class TripMiddleware {
   static async validateData(req, res, next) {
@@ -35,6 +36,20 @@ export default class TripMiddleware {
       const data = await Buses.select('*', `WHERE id = '${bus_id}'`);
 
       if (data.length < 1) return returnError(res, 'Bus not found', 404);
+
+      return next();
+    } catch (err) {
+      return returnError(res, err.message, 500);
+    }
+  }
+
+  static async checkIfTripExists(req, res, next) {
+    try {
+      const { trip_id } = req.body;
+
+      const data = await Trips.select('*', `WHERE id = '${trip_id}'`);
+
+      if (data.length < 1) return returnError(res, 'Trip does not exist', 404);
 
       return next();
     } catch (err) {

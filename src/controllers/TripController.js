@@ -21,4 +21,19 @@ export default class TripController {
       return returnError(res, err.message, 500);
     }
   }
+
+  static async cancelTrip(req, res) {
+    try {
+      const { trip_id } = req.body;
+
+      const data = await Trips.update("status = 'cancelled'", `id = '${trip_id}'`);
+
+      return res.status(200).json({
+        data,
+        status: 'success',
+      });
+    } catch (err) {
+      return returnError(res, err.message, 500);
+    }
+  }
 }
