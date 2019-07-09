@@ -27,6 +27,7 @@ describe('Trips', () => {
         .set('access-token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGVjayI6dHJ1ZSwiaWF0IjoxNTYyNjY1ODgxLCJleHAiOjE1NjI3MDkwODF9._tCKqBZh9oUFx95PBlRVa93CNOFbuz91ngaU-0r0RNk')
         .send(trip)
         .end((err, res) => {
+          console.log(res);
           res.should.have.status(200);
           res.body.should.be.a('object');
           res.body.should.have.property('status');

@@ -11,6 +11,8 @@ before_script:
   - psql -d wayfarer -f db.sql -U postgres
 postgres:
   database: wayfarer
+  adapter: postgresql
+  username: postgres
 install:
   - "npm install"
 script:
