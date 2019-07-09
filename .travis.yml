@@ -6,10 +6,11 @@ cache:
     - "node_modules"
 services:
   - postgresql
-postgres:
-  database: wayfarer
-  adapter: postgresql
-  username: postgres
+env:
+  global:
+    - PGHOST=localhost
+    - PGDATABASE=wayfarer
+    - PGPORT=5432
 install:
   - "npm install"
 before_script:
