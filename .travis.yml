@@ -16,7 +16,7 @@ install:
 #     - PGPORT=5432
 before_script:
   - psql -c "CREATE DATABASE wayfarer;" -U postgres
-  - psql -c "CREATE USER chi WITH PASSWORD Brain.box8;" -U postgres
+  - psql -c "CREATE USER chi WITH PASSWORD 'Brain.box8';" -U postgres
   - psql -d wayfarer -f db.sql -U postgres
 script:
   - npm run test
