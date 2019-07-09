@@ -6,11 +6,6 @@ cache:
     - "node_modules"
 services:
   - postgresql
-# env:
-#   global:
-#     - PGHOST=localhost
-#     - PGDATABASE=wayfarer
-#     - PGPORT=5432
 install:
   - "npm install"
 before_script:
