@@ -6,7 +6,9 @@ dotenv.config();
 export default class Model {
   constructor(table) {
     this.table = table;
-    this.pool = new Pool();
+    this.pool = new Pool({
+      connectionString: process.env.PG_CONNECTION_STRING,
+    });
   }
 
   async select(columns = '*', clause = '') {
