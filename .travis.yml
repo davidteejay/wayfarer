@@ -8,9 +8,16 @@ services:
   - postgresql
 install:
   - "npm install"
+env:
+  global:
+    - PGUSER=chi
+    - PGDATABASE=wayfarer
+    - PGPASSWORD=Brain.box8
+    - PGPORT=5432
 before_script:
-  - psql -f db.sql -U postgres
-  - psql -c "SELECT * FROM users;" -U postgres
+  - psql -c "CREATE DATABASE wayfarer;" -U postgres
+  - psql -c "CREATE USER chi WITH PASSWORD Brain.box8;" -U postgres
+  - psql -d wayfarer -f db.sql -U postgres
 script:
   - npm run test
 after_script:
