@@ -8,33 +8,10 @@ services:
   - postgresql
 install:
   - "npm install"
-# env:
-#   global:
-#     - PGUSER=chi
-#     - PGDATABASE=wayfarer
-#     - PGPASSWORD=Brain.box8
-#     - PGPORT=5432
 before_script:
   - psql -c "CREATE DATABASE wayfarer;" -U postgres
-  - psql -c "CREATE USER chi WITH PASSWORD 'Brain.box8';" -U postgres
-  - psql -c "CREATE TABLE IF NOT EXISTS users (
-    id SERIAL PRIMARY KEY,
-    email VARCHAR NOT NULL UNIQUE,
-    first_name VARCHAR NOT NULL,
-    last_name VARCHAR NOT NULL, 
-    password VARCHAR NOT NULL,
-    is_admin BOOLEAN NOT NULL DEFAULT FALSE
-  );" -U chi
-  - psql -c "CREATE TABLE IF NOT EXISTS buses (
-    id SERIAL PRIMARY KEY,
-    number_plate VARCHAR NOT NULL UNIQUE,
-    manufacturer VARCHAR NOT NULL,
-    model VARCHAR NOT NULL, 
-    year VARCHAR NOT NULL,
-    capacity INTEGER NOT NULL,
-    created_by SERIAL NOT NULL
-  );" -U chi
-  # - psql -d wayfarer -f db.sql -U postgres
+  - psql -c "CREATE USER chi WITH PASSWORD null;" -U postgres
+  - psql -f db.sql -d wayfarer -U postgres
 script:
   - npm run test
 after_script:
