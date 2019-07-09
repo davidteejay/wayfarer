@@ -17,10 +17,10 @@ export default class Model {
   }
 
   async insert(columns, values) {
-    const query = `INSERT INTO ${this.table} (${columns}) VALUES (${values})`;
+    const query = `INSERT INTO ${this.table} (${columns}) VALUES (${values}) RETURNING *`;
 
     const data = await this.pool.query(query);
-    return data;
+    return data.rows[0];
   }
 
   async update(columns, clause) {

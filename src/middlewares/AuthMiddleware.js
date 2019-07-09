@@ -1,11 +1,15 @@
-/* eslint-disable no-unused-vars */
+/* eslint-disable camelcase */
+/* eslint-disable consistent-return */
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import debug from 'debug';
 
 import returnError from '../helpers/errorHandler';
+import Model from '../models/Model';
 
 dotenv.config();
 const { JWT_SECRET } = process.env;
+const Users = new Model('users');
 
 export default class AuthMiddleware {
   static async generateToken(req, res, next) {
@@ -28,15 +32,28 @@ export default class AuthMiddleware {
 
       if (token) {
         await jwt.verify(token, JWT_SECRET, (err, decoded) => {
-          if (err) {
-            return returnError(res, 'Invalid Token', 401);
-          }
+          debug('wayfarer:debug')(decoded);
+          if (err || !decoded || !decoded.check) return returnError(res, 'Invalid Token', 401);
 
           return next();
         });
+      } else return returnError(res, 'Token Not Found', 401);
+    } catch (err) {
+      return returnError(res, err.message, 500);
+    }
+  }
+
+  static async checkIfUserIsAdmin(req, res, next) {
+    try {
+      const { user_id } = req.body;
+
+      const data = await Users.select('*', `WHERE id = '${user_id}'`);
+
+      if (data.length < 1 || !data[0].is_admin) {
+        return returnError(res, 'Access Denied', 401);
       }
 
-      return returnError(res, 'Token Not Found', 401);
+      return next();
     } catch (err) {
       return returnError(res, err.message, 500);
     }

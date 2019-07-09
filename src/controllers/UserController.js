@@ -5,25 +5,15 @@ import returnError from '../helpers/errorHandler';
 const Users = new Model('users');
 
 export default class UserController {
-  static async getAllUsers(req, res) {
-    try {
-      return res.status(200).json({
-        data: await Users.select('id, first_name, last_name, email, is_admin'),
-        status: 'success',
-      });
-    } catch (err) {
-      return returnError(res, err.message, 500);
-    }
-  }
-
   static async signIn(req, res) {
     try {
       const { email, password } = req.body;
+      const { token } = req.data;
       const login = await Users.select('*', `WHERE email = '${email}' AND password = '${password}'`);
 
       if (login.length > 0) {
         return res.status(200).json({
-          data: login[0],
+          data: { ...login[0], token },
           status: 'success',
         });
       }
@@ -39,13 +29,12 @@ export default class UserController {
       const {
         first_name, last_name, email, password,
       } = req.body;
+      const { token } = req.data;
 
-      await Users.insert('first_name, last_name, email, password', `'${first_name}', '${last_name}', '${email}', '${password}'`);
-
-      const data = await Users.select('*', `WHERE email = '${email}'`);
+      const data = await Users.insert('first_name, last_name, email, password', `'${first_name}', '${last_name}', '${email}', '${password}'`);
 
       return res.status(200).json({
-        data: data[0],
+        data: { ...data, token },
         status: 'success',
       });
     } catch (err) {

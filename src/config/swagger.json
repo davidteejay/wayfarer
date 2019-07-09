@@ -20,41 +20,7 @@
     "https"
   ],
   "paths": {
-    "/users/": {
-      "get": {
-        "tags": [
-          "Users"
-        ],
-        "summary": "Get All Users in the Database",
-        "security": {
-          "access-token": []
-        },
-        "consumes": "application/json",
-        "produces": "application/json",
-        "content": "application/json",
-        "responses": {
-          "200": {
-            "description": "All Users Fetched",
-            "schema": {
-              "$ref": "#/definitions/Users"
-            }
-          },
-          "401": {
-            "description": "No or Invalid Auth Token",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      }
-    },
-    "/users/login": {
+    "/auth/login": {
       "post": {
         "tags": [
           "Users"
@@ -95,7 +61,7 @@
         }
       }
     },
-    "/users/signup": {
+    "/auth/signup": {
       "post": {
         "tags": [
           "Users"
@@ -135,39 +101,59 @@
           }
         }
       }
+    },
+    "/trips/": {
+      "post": {
+        "tags": [
+          "Trips"
+        ],
+        "summary": "Allows an admin to create a trip",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": "true",
+            "schema": {
+              "$ref": "#/definitions/TripData"
+            }
+          },
+          {
+            "name": "api_key",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "security": {
+          "access-token": []
+        },
+        "consumes": "application/json",
+        "produces": "application/json",
+        "content": "application/json",
+        "responses": {
+          "200": {
+            "description": "Created Successfully",
+            "schema": {
+              "$ref": "#/definitions/Trip"
+            }
+          },
+          "401": {
+            "description": "Incomplete trip data",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
-    "Users": {
-      "type": "object",
-      "properties": {
-        "data": {
-          "type": "array",
-          "items": {
-            "properties": {
-              "id": {
-                "type": "number"
-              },
-              "first_name": {
-                "type": "string"
-              },
-              "last_name": {
-                "type": "string"
-              },
-              "email": {
-                "type": "string"
-              },
-              "is_admin": {
-                "type": "boolean"
-              }
-            }
-          }
-        },
-        "status": {
-          "type": "string"
-        }
-      }
-    },
     "User": {
       "type": "object",
       "properties": {
@@ -191,6 +177,41 @@
             },
             "is_admin": {
               "type": "boolean"
+            }
+          }
+        },
+        "status": "string"
+      }
+    },
+    "Trip": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "number"
+            },
+            "created_by": {
+              "type": "integer"
+            },
+            "bus_id": {
+              "type": "integer"
+            },
+            "origin": {
+              "type": "string"
+            },
+            "destination": {
+              "type": "string"
+            },
+            "trip_date": {
+              "type": "string"
+            },
+            "fare": {
+              "type": "integer"
+            },
+            "status": {
+              "type": "string"
             }
           }
         }
@@ -221,6 +242,29 @@
         },
         "password": {
           "type": "string"
+        }
+      }
+    },
+    "TripData": {
+      "type": "object",
+      "properties": {
+        "user_id": {
+          "type": "integer"
+        },
+        "bus_id": {
+          "type": "integer"
+        },
+        "origin": {
+          "type": "string"
+        },
+        "destination": {
+          "type": "string"
+        },
+        "trip_date": {
+          "type": "string"
+        },
+        "fare": {
+          "type": "integer"
         }
       }
     },
