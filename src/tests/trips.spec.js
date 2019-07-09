@@ -194,7 +194,7 @@ describe('Trips', () => {
           res.body.should.be.a('object');
           res.body.should.have.property('status');
           res.body.should.have.property('data');
-          res.body.data.should.be.a('array');
+          res.body.data.should.be.a('object');
           res.body.status.should.be.equal('success');
           done();
         });

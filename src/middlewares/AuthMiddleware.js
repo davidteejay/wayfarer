@@ -8,7 +8,7 @@ import Model from '../models/Model';
 
 dotenv.config();
 const { JWT_SECRET } = process.env;
-const Users = new Model('users');
+const db = new Model();
 
 export default class AuthMiddleware {
   static async generateToken(req, res, next) {
@@ -45,9 +45,9 @@ export default class AuthMiddleware {
     try {
       const { user_id } = req.body;
 
-      const data = await Users.select('*', `WHERE id = '${user_id}'`);
+      const { rows } = await db.query('SELECT * FROM users WHERE id = $1', [user_id]);
 
-      if (data.length < 1 || !data[0].is_admin) {
+      if (rows.length < 1 || !rows[0].is_admin) {
         return returnError(res, 'Access Denied', 401);
       }
 
