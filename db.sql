@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS buses (
   capacity INTEGER NOT NULL,
   created_by SERIAL NOT NULL
 );
+INSERT INTO buses (number_plate, manufacturer, model, year, capacity) VALUES ('KTU19029', 'Toyota', 'Hiace', '2004', 18);
 
 CREATE TYPE status AS ENUM ('active', 'cancelled');
 CREATE TABLE IF NOT EXISTS trips (
