@@ -17,7 +17,15 @@ install:
 before_script:
   - psql -c "CREATE DATABASE wayfarer;" -U postgres
   - psql -c "CREATE USER chi WITH PASSWORD 'Brain.box8';" -U postgres
-  - psql -d wayfarer -f db.sql -U postgres
+  - psql -c "CREATE TABLE IF NOT EXISTS users (
+    id SERIAL PRIMARY KEY,
+    email VARCHAR NOT NULL UNIQUE,
+    first_name VARCHAR NOT NULL,
+    last_name VARCHAR NOT NULL, 
+    password VARCHAR NOT NULL,
+    is_admin BOOLEAN NOT NULL DEFAULT FALSE
+  );" -U chi
+  # - psql -d wayfarer -f db.sql -U postgres
 script:
   - npm run test
 after_script:
