@@ -12,13 +12,13 @@ postgres:
   database: wayfarer
   username: postgres
 before_script:
-  - psql -c "CREATE DATABASE wayfarer;" -U postgres
+  - psql -c "CREATE DATABASE wayfarer_test;" -U postgres
   - psql -c "CREATE USER chi WITH PASSWORD null;" -U postgres
-  - psql -f db.sql -U postgres
+  - psql -f db.sql -d wayfarer_test -U postgres
   - psql -c "SELECT * FROM buses;" -U postgres
 script:
   - npm run test
 after_script:
-  - psql -c "DROP DATABASE wayfarer;" -U postgres
+  - psql -c "DROP DATABASE wayfarer_test;" -U postgres
 after_success:
   - npm run coverage
