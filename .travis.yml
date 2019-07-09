@@ -14,8 +14,7 @@ env:
 install:
   - "npm install"
 before_script:
-  - psql -c "CREATE DATABASE wayfarer;" -U postgres
-  - psql -d wayfarer -f db.sql -U postgres
+  - psql -f db.sql -U postgres
   - psql -c "SELECT * FROM users;" -U postgres
 script:
   - npm run test
