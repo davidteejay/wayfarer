@@ -36,4 +36,27 @@ export default class TripController {
       return returnError(res, err.message, 500);
     }
   }
+
+  static async getTrips(req, res) {
+    try {
+      const { origin, destination } = req.query;
+      let query = 'SELECT origin, destination, trip_date, fare, status, number_plate as bus_plate_number, manufacturer AS bus_manufacturer, model AS bus_model, capacity AS bus_capacity FROM trips JOIN buses ON trips.bus_id = buses.id';
+      let values = [];
+
+      if (origin) {
+        query = 'SELECT origin, destination, trip_date, fare, status, number_plate as bus_plate_number, manufacturer AS bus_manufacturer, model AS bus_model, capacity AS bus_capacity FROM trips JOIN buses ON trips.bus_id = buses.id WHERE origin LIKE $1';
+        values = [`%${origin}`];
+      } else if (destination) {
+        query = 'SELECT origin, destination, trip_date, fare, status, number_plate as bus_plate_number, manufacturer AS bus_manufacturer, model AS bus_model, capacity AS bus_capacity FROM trips JOIN buses ON trips.bus_id = buses.id WHERE destination LIKE $1';
+        values = [`%${destination}`];
+      }
+      const { rows } = await db.query(query, values);
+      return res.status(200).json({
+        data: rows,
+        status: 'success',
+      });
+    } catch (err) {
+      return returnError(res, err.message, 500);
+    }
+  }
 }

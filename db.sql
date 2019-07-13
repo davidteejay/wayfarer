@@ -21,7 +21,7 @@ INSERT INTO buses (number_plate, manufacturer, model, year, capacity) VALUES ('K
 CREATE TYPE status AS ENUM ('active', 'cancelled');
 CREATE TABLE IF NOT EXISTS trips (
   id SERIAL PRIMARY KEY,
-  bus_id SERIAL NOT NULL,
+  bus_id SERIAL NOT NULL REFERENCES buses(id),
   origin VARCHAR NOT NULL,
   destination VARCHAR NOT NULL,
   trip_date DATE NOT NULL, 

@@ -102,7 +102,60 @@
         }
       }
     },
-    "/trips/": {
+    "GET /trips/": {
+      "get": {
+        "tags": [
+          "Trips"
+        ],
+        "summary": "Allows an admin to create a trip",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "origin",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "destination",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "api_key",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "security": {
+          "access-token": []
+        },
+        "consumes": "application/json",
+        "produces": "application/json",
+        "content": "application/json",
+        "responses": {
+          "200": {
+            "description": "Fetched Successfully",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Trip"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "POST /trips/": {
       "post": {
         "tags": [
           "Trips"
