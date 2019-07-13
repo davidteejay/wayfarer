@@ -2,7 +2,7 @@
 import Model from '../models/Model';
 import returnError from '../helpers/errorHandler';
 
-const Users = new Model('users');
+const db = new Model();
 
 export default class UserMiddleware {
   static async validateUserData(req, res, next) {
@@ -11,12 +11,7 @@ export default class UserMiddleware {
         first_name, last_name, email, password,
       } = req.body;
 
-      if (
-        !first_name || first_name === ''
-        || !last_name || last_name === ''
-        || !password || password === ''
-        || !email || email === ''
-      ) {
+      if (!first_name || !last_name || !password || !email) {
         return returnError(res, 'Incomplete user data', 401);
       }
 
@@ -29,9 +24,9 @@ export default class UserMiddleware {
   static async checkIfEmailExists(req, res, next) {
     try {
       const { email } = req.body;
-      const data = await Users.select('*', `WHERE email = '${email}'`);
+      const { rows } = await db.query('SELECT * FROM users WHERE email = $1', [email]);
 
-      if (data.length > 0) {
+      if (rows.length > 0) {
         return returnError(res, 'Email already exists', 401);
       }
 

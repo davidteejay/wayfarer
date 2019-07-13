@@ -2,8 +2,7 @@
 import Model from '../models/Model';
 import returnError from '../helpers/errorHandler';
 
-const Buses = new Model('buses');
-const Trips = new Model('trips');
+const db = new Model();
 
 export default class TripMiddleware {
   static async validateData(req, res, next) {
@@ -12,14 +11,7 @@ export default class TripMiddleware {
         user_id, bus_id, origin, destination, trip_date, fare,
       } = req.body;
 
-      if (
-        !user_id || user_id === ''
-        || !bus_id || bus_id === ''
-        || !origin || origin === ''
-        || !destination || destination === ''
-        || !trip_date || trip_date === ''
-        || !fare || fare === ''
-      ) {
+      if (!user_id || !bus_id || !origin || !destination || !trip_date || !fare) {
         return returnError(res, 'Incomplete trip data', 401);
       }
 
@@ -33,9 +25,9 @@ export default class TripMiddleware {
     try {
       const { bus_id } = req.body;
 
-      const data = await Buses.select('*', `WHERE id = '${bus_id}'`);
+      const { rows } = await db.query('SELECT * FROM buses WHERE id = $1', [bus_id]);
 
-      if (data.length < 1) return returnError(res, 'Bus not found', 404);
+      if (rows.length < 1) return returnError(res, 'Bus not found', 404);
 
       return next();
     } catch (err) {
@@ -47,9 +39,9 @@ export default class TripMiddleware {
     try {
       const { trip_id } = req.body;
 
-      const data = await Trips.select('*', `WHERE id = '${trip_id}'`);
+      const { rows } = await db.query('SELECT * FROM trips WHERE id = $1', [trip_id]);
 
-      if (data.length < 1) return returnError(res, 'Trip does not exist', 404);
+      if (rows.length < 1) return returnError(res, 'Trip does not exist', 404);
 
       return next();
     } catch (err) {
