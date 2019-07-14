@@ -8,7 +8,7 @@ chai.use(chaiHttp);
 chai.should();
 
 const baseUrl = '/api/v1/trips';
-const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGVjayI6dHJ1ZSwiaWF0IjoxNTYzMDQ2Nzk0LCJleHAiOjE1NjMwODk5OTR9.L4XLlYsCV8RLMXDnHEde12MtKhe8fk9ynpPRegfPGR0';
+const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGVjayI6dHJ1ZSwiaWF0IjoxNTYzMTM1ODM0LCJleHAiOjE1NjMxNzkwMzR9.Lb5jS6GUqnNqMFcud5wRcyPl5wNPSqkvr3PZ9nq-mVg';
 
 describe('Trips', () => {
   describe('POST /', () => {
@@ -178,16 +178,15 @@ describe('Trips', () => {
     });
   });
 
-  describe('POST /cancel', () => {
+  describe('POST /cancel/:trip_id', () => {
     it('should cancel a trip', (done) => {
       const trip = {
-        trip_id: 1,
         user_id: 1,
       };
 
       chai
         .request(app)
-        .post(`${baseUrl}/cancel`)
+        .post(`${baseUrl}/cancel/1`)
         .set('access-token', token)
         .send(trip)
         .end((err, res) => {
@@ -202,16 +201,15 @@ describe('Trips', () => {
     });
   });
 
-  describe('POST /cancel', () => {
+  describe('POST /cancel/:trip_id', () => {
     it('should not cancel a trip', (done) => {
       const trip = {
-        trip_id: 1,
         user_id: 2,
       };
 
       chai
         .request(app)
-        .post(`${baseUrl}/cancel`)
+        .post(`${baseUrl}/cancel/1`)
         .set('access-token', token)
         .send(trip)
         .end((err, res) => {
@@ -226,16 +224,15 @@ describe('Trips', () => {
     });
   });
 
-  describe('POST /cancel', () => {
+  describe('POST /cancel/:trip_id', () => {
     it('should not cancel a trip', (done) => {
       const trip = {
-        trip_id: 1,
         user_id: 1,
       };
 
       chai
         .request(app)
-        .post(`${baseUrl}/cancel`)
+        .post(`${baseUrl}/cancel/1`)
         .send(trip)
         .end((err, res) => {
           res.should.have.status(401);
@@ -249,16 +246,15 @@ describe('Trips', () => {
     });
   });
 
-  describe('POST /cancel', () => {
+  describe('POST /cancel/:trip_id', () => {
     it('should not cancel a trip', (done) => {
       const trip = {
-        trip_id: 1,
         user_id: 1,
       };
 
       chai
         .request(app)
-        .post(`${baseUrl}/cancel`)
+        .post(`${baseUrl}/cancel/1`)
         .set('access-token', 'eyJhbGciOiJIUzI1NiIsInR6cCI6IkpXVCJ9.eyJjaGVjayI6dHJ1ZSwiaWF0IjoxNTYyNjY1ODgxLCJleHAiOjE1NjI3MDkwODF9._tCKqBZh9oUFx95PBlRVa93CNOFbuz91ngaU-0r0RAz')
         .send(trip)
         .end((err, res) => {
@@ -273,16 +269,15 @@ describe('Trips', () => {
     });
   });
 
-  describe('POST /cancel', () => {
+  describe('POST /cancel/:trip_id', () => {
     it('should not cancel a trip', (done) => {
       const trip = {
-        trip_id: 1000,
         user_id: 1,
       };
 
       chai
         .request(app)
-        .post(`${baseUrl}/cancel`)
+        .post(`${baseUrl}/cancel/1000`)
         .set('access-token', token)
         .send(trip)
         .end((err, res) => {

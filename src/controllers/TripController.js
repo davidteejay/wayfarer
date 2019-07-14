@@ -24,7 +24,7 @@ export default class TripController {
 
   static async cancelTrip(req, res) {
     try {
-      const { trip_id } = req.body;
+      const { trip_id } = req.params;
 
       const { rows } = await db.query("UPDATE trips SET status = 'cancelled' WHERE id = $1 RETURNING *", [trip_id]);
 

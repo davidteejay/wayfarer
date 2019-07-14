@@ -37,7 +37,7 @@ export default class TripMiddleware {
 
   static async checkIfTripExists(req, res, next) {
     try {
-      const { trip_id } = req.body;
+      const { trip_id } = req.params;
 
       const { rows } = await db.query('SELECT * FROM trips WHERE id = $1', [trip_id]);
 
