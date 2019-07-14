@@ -64,7 +64,7 @@ describe('Bookings', () => {
     it('should not add a new booking', (done) => {
       const booking = {
         trip_id: 4,
-        user_id: 3,
+        user_id: 1,
         seat_number: 2,
       };
 
