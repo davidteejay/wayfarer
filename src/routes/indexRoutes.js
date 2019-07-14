@@ -1,9 +1,13 @@
+import express from 'express';
+
 import UserRoutes from './UserRoutes';
 import TripRoutes from './TripRoutes';
+import BookingRoutes from './BookingRoutes';
 
-export default (router) => {
-  router.use('/auth', UserRoutes(router));
-  router.use('/trips', TripRoutes(router));
+const router = express.Router();
 
-  return router;
-};
+router.use('/auth', UserRoutes);
+router.use('/trips', TripRoutes);
+router.use('/bookings', BookingRoutes);
+
+export default router;

@@ -102,12 +102,12 @@
         }
       }
     },
-    "GET /trips/": {
+    "/trips/": {
       "get": {
         "tags": [
           "Trips"
         ],
-        "summary": "Allows an admin to create a trip",
+        "summary": "Gets all the trips",
         "parameters": [
           {
             "in": "query",
@@ -153,9 +153,7 @@
             }
           }
         }
-      }
-    },
-    "POST /trips/": {
+      },
       "post": {
         "tags": [
           "Trips"
@@ -205,7 +203,7 @@
         }
       }
     },
-    "/trips/cancel": {
+    "/trips/cancel/{trip_id}": {
       "post": {
         "tags": [
           "Trips"
@@ -213,17 +211,23 @@
         "summary": "Allows an admin to cancel a trip",
         "parameters": [
           {
+            "in": "url",
+            "name": "trip_id",
+            "required": "true",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
             "in": "body",
             "name": "body",
             "required": "true",
             "schema": {
               "type": "object",
               "properties": {
-                "trip_id": {
-                  "type": "integer"
-                },
                 "user_id": {
-                  "type": "integer"
+                  "type": "integer",
+                  "required": true
                 }
               }
             }
@@ -250,6 +254,77 @@
                 "data": {
                   "type": "array",
                   "items": {}
+                },
+                "status": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Incomplete trip data",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/bookings": {
+      "post": {
+        "tags": [
+          "Bookings"
+        ],
+        "summary": "Allows a user to book a trip",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": "true",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "user_id": {
+                  "type": "integer",
+                  "required": true
+                },
+                "trip_id": {
+                  "type": "integer",
+                  "required": true
+                },
+                "seat_number": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          {
+            "name": "api_key",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "security": {
+          "access-token": []
+        },
+        "consumes": "application/json",
+        "produces": "application/json",
+        "content": "application/json",
+        "responses": {
+          "200": {
+            "description": "Added Successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "$ref": "#/definitions/Booking"
                 },
                 "status": {
                   "type": "string"
@@ -334,6 +409,26 @@
               "type": "string"
             }
           }
+        }
+      }
+    },
+    "Booking": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "user_id": {
+          "type": "integer"
+        },
+        "trip_id": {
+          "type": "integer"
+        },
+        "created_on": {
+          "type": "string"
+        },
+        "seat_number": {
+          "type": "integer"
         }
       }
     },

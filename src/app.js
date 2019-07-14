@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
@@ -13,7 +14,6 @@ import returnError from './helpers/errorHandler';
 dotenv.config();
 
 const app = express();
-const router = express.Router();
 const port = process.env.PORT;
 const deBug = debug('wayfarer:server');
 
@@ -24,8 +24,12 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerDoc));
-app.use('/api/v1/', indexRoutes(router));
+app.use('/api/v1/', indexRoutes);
 app.use('/*', (req, res) => returnError(res, 'Incorrect Route', 404));
+app.use((err, req, res, next) => res.send({
+  status: 'error',
+  message: err.message,
+}));
 
 app.listen(port, () => deBug(`Listening on port ${port}`));
 
