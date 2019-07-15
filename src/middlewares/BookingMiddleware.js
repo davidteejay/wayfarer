@@ -54,4 +54,24 @@ export default class BookingMiddleware {
       return returnError(res, err.message, 500);
     }
   }
+
+  static async checkIfUserIsAdmin(req, res, next) {
+    try {
+      const { user_id } = req.body;
+
+      if (!user_id) {
+        return returnError(res, 'User ID not specified', 404);
+      }
+
+      const { rows } = await db.query('SELECT * FROM users WHERE id = $1', [user_id]);
+
+      req.data = {
+        is_admin: rows[0].is_admin,
+      };
+
+      return next();
+    } catch (err) {
+      return returnError(res, err.message, 500);
+    }
+  }
 }
