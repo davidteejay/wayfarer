@@ -19,12 +19,12 @@ CREATE TABLE IF NOT EXISTS buses (
   capacity INTEGER NOT NULL,
   created_by INTEGER NOT NULL
 );
-INSERT INTO buses (number_plate, manufacturer, model, year, capacity) VALUES ('KTU19029', 'Toyota', 'Hiace', '2004', 18);
+INSERT INTO buses (number_plate, manufacturer, model, year, capacity, created_by) VALUES ('KTU19029', 'Toyota', 'Hiace', '2004', 18, 1);
 
 CREATE TYPE status AS ENUM ('active', 'cancelled');
 CREATE TABLE IF NOT EXISTS trips (
   id SERIAL PRIMARY KEY,
-  bus_id INTEGER NOT NULL REFERENCES buses(id),
+  bus_id INTEGER NOT NULL,
   origin VARCHAR NOT NULL,
   destination VARCHAR NOT NULL,
   trip_date DATE NOT NULL, 
@@ -35,8 +35,8 @@ CREATE TABLE IF NOT EXISTS trips (
 
 CREATE TABLE IF NOT EXISTS bookings (
   id SERIAL,
-  user_id INTEGER NOT NULL REFERENCES users(id),
-  trip_id INTEGER NOT NULL REFERENCES trips(id),
+  user_id INTEGER NOT NULL,
+  trip_id INTEGER NOT NULL,
   created_on DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
   seat_number INTEGER,
   PRIMARY KEY(user_id, trip_id)
