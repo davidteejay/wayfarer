@@ -1,0 +1,640 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Wayfarer API Documentation",
+    "version": "1.0.0",
+    "description": "Documentation to test the endpoints for the wayfarer API"
+  },
+  "host": "localhost:5000",
+  "basePath": "/api/v1",
+  "securityDefinitions": {
+    "access-token": {
+      "type": "apiKey",
+      "name": "access-token",
+      "in": "header",
+      "authorizationUrl": "http://localhost:5000/api/v1/auth/verify"
+    }
+  },
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Allows a user to login",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": "true",
+            "schema": {
+              "$ref": "#/definitions/LoginData"
+            }
+          }
+        ],
+        "consumes": "application/json",
+        "produces": "application/json",
+        "content": "application/json",
+        "responses": {
+          "200": {
+            "description": "Login Successful",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "404": {
+            "description": "Invalid Email or Password",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/auth/signup": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Allows a user to signup",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": "true",
+            "schema": {
+              "$ref": "#/definitions/SignupData"
+            }
+          }
+        ],
+        "consumes": "application/json",
+        "produces": "application/json",
+        "content": "application/json",
+        "responses": {
+          "200": {
+            "description": "Signup Successful",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "401": {
+            "description": "Email already exists",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/trips/": {
+      "get": {
+        "tags": [
+          "Trips"
+        ],
+        "summary": "Gets all the trips",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "origin",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "destination",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "api_key",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "security": {
+          "access-token": []
+        },
+        "consumes": "application/json",
+        "produces": "application/json",
+        "content": "application/json",
+        "responses": {
+          "200": {
+            "description": "Fetched Successfully",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Trip"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Trips"
+        ],
+        "summary": "Allows an admin to create a trip",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": "true",
+            "schema": {
+              "$ref": "#/definitions/TripData"
+            }
+          },
+          {
+            "name": "api_key",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "security": {
+          "access-token": []
+        },
+        "consumes": "application/json",
+        "produces": "application/json",
+        "content": "application/json",
+        "responses": {
+          "200": {
+            "description": "Created Successfully",
+            "schema": {
+              "$ref": "#/definitions/Trip"
+            }
+          },
+          "401": {
+            "description": "Incomplete trip data",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/trips/{trip_id}": {
+      "patch": {
+        "tags": [
+          "Trips"
+        ],
+        "summary": "Allows an admin to cancel a trip",
+        "parameters": [
+          {
+            "in": "url",
+            "name": "trip_id",
+            "required": "true",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": "true",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "user_id": {
+                  "type": "integer",
+                  "required": true
+                }
+              }
+            }
+          },
+          {
+            "name": "api_key",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "security": {
+          "access-token": []
+        },
+        "consumes": "application/json",
+        "produces": "application/json",
+        "content": "application/json",
+        "responses": {
+          "200": {
+            "description": "Cancelled Successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "$ref": "#/definitions/Trip"
+                  }
+                },
+                "status": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Incomplete trip data",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/bookings": {
+      "post": {
+        "tags": [
+          "Bookings"
+        ],
+        "summary": "Allows a user to book a trip",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": "true",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "user_id": {
+                  "type": "integer",
+                  "required": true
+                },
+                "trip_id": {
+                  "type": "integer",
+                  "required": true
+                },
+                "seat_number": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          {
+            "name": "api_key",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "security": {
+          "access-token": []
+        },
+        "consumes": "application/json",
+        "produces": "application/json",
+        "content": "application/json",
+        "responses": {
+          "200": {
+            "description": "Added Successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "$ref": "#/definitions/Booking"
+                },
+                "status": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Incomplete trip data",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Bookings"
+        ],
+        "summary": "Gets all bookings",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": "true",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "user_id": {
+                  "type": "integer",
+                  "required": true
+                }
+              }
+            }
+          },
+          {
+            "name": "api_key",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "security": {
+          "access-token": []
+        },
+        "consumes": "application/json",
+        "produces": "application/json",
+        "content": "application/json",
+        "responses": {
+          "200": {
+            "description": "Fetched Successfully",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "$ref": "#/definitions/Booking"
+                  },
+                  "status": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Incomplete trip data",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/bookings/{booking_id}": {
+      "patch": {
+        "tags": [
+          "Bookings"
+        ],
+        "summary": "Allows a user to delete a booking",
+        "parameters": [
+          {
+            "in": "url",
+            "name": "booking_id",
+            "required": "true",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": "true",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "user_id": {
+                  "type": "integer",
+                  "required": true
+                }
+              }
+            }
+          },
+          {
+            "name": "api_key",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "security": {
+          "access-token": []
+        },
+        "consumes": "application/json",
+        "produces": "application/json",
+        "content": "application/json",
+        "responses": {
+          "200": {
+            "description": "Deleted Successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "$ref": "#/definitions/Booking"
+                  }
+                },
+                "status": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Incomplete trip data",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "number"
+            },
+            "first_name": {
+              "type": "string"
+            },
+            "last_name": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            },
+            "is_admin": {
+              "type": "boolean"
+            }
+          }
+        },
+        "status": "string"
+      }
+    },
+    "Trip": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "number"
+            },
+            "created_by": {
+              "type": "integer"
+            },
+            "bus_id": {
+              "type": "integer"
+            },
+            "origin": {
+              "type": "string"
+            },
+            "destination": {
+              "type": "string"
+            },
+            "trip_date": {
+              "type": "string"
+            },
+            "fare": {
+              "type": "integer"
+            },
+            "status": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "Booking": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "user_id": {
+          "type": "integer"
+        },
+        "trip_id": {
+          "type": "integer"
+        },
+        "created_on": {
+          "type": "string"
+        },
+        "seat_number": {
+          "type": "integer"
+        }
+      }
+    },
+    "SignupData": {
+      "type": "object",
+      "properties": {
+        "first_name": {
+          "type": "string"
+        },
+        "last_name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "LoginData": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "TripData": {
+      "type": "object",
+      "properties": {
+        "user_id": {
+          "type": "integer"
+        },
+        "bus_id": {
+          "type": "integer"
+        },
+        "origin": {
+          "type": "string"
+        },
+        "destination": {
+          "type": "string"
+        },
+        "trip_date": {
+          "type": "string"
+        },
+        "fare": {
+          "type": "integer"
+        }
+      }
+    },
+    "Error": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
