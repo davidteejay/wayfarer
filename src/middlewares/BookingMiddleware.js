@@ -7,6 +7,7 @@ const db = new Model();
 export default class BookingMiddleware {
   static async validateData(req, res, next) {
     try {
+      console.log(req.body)
       const { user_id, trip_id } = req.body;
 
       if (!user_id || !trip_id) {

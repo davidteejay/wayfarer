@@ -8,6 +8,6 @@ const router = express.Router();
 
 router.get('/', AuthMiddleware.validateToken, BookingMiddleware.checkIfUserIsAdmin, BookingController.getBookings);
 router.post('/', AuthMiddleware.validateToken, BookingMiddleware.validateData, BookingMiddleware.checkIfUserHasBooked, BookingMiddleware.checkIfSeatIsTaken, BookingController.addBooking);
-router.patch('/:booking_id', AuthMiddleware.validateToken, BookingMiddleware.checkIfUserHasBooking, BookingController.deleteBooking);
+router.delete('/:booking_id', AuthMiddleware.validateToken, BookingMiddleware.checkIfUserHasBooking, BookingController.deleteBooking);
 
 export default router;

@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS trips (
   destination VARCHAR NOT NULL,
   trip_date DATE NOT NULL, 
   fare INTEGER NOT NULL,
-  status status NOT NULL DEFAULT 'active',
+  status status NOT NULL DEFAULT 'active'
 );
 
 CREATE TABLE IF NOT EXISTS bookings (
