@@ -197,3 +197,4 @@ function () {
 }();
 
 exports["default"] = AuthMiddleware;
+//# sourceMappingURL=AuthMiddleware.js.map

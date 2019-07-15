@@ -275,3 +275,4 @@ describe('Trips', function () {
     });
   });
 });
+//# sourceMappingURL=_trips.spec.js.map

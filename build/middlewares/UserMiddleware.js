@@ -130,3 +130,4 @@ function () {
 }();
 
 exports["default"] = UserMiddleware;
+//# sourceMappingURL=UserMiddleware.js.map

@@ -14,3 +14,4 @@ var _default = function _default(res, error, statusCode) {
 };
 
 exports["default"] = _default;
+//# sourceMappingURL=errorHandler.js.map

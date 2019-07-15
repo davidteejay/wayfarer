@@ -22,3 +22,4 @@ router.post('/', _AuthMiddleware["default"].validateToken, _BookingMiddleware["d
 router.patch('/:booking_id', _AuthMiddleware["default"].validateToken, _BookingMiddleware["default"].checkIfUserHasBooking, _BookingController["default"].deleteBooking);
 var _default = router;
 exports["default"] = _default;
+//# sourceMappingURL=BookingRoutes.js.map

@@ -293,3 +293,4 @@ function () {
 }();
 
 exports["default"] = BookingMiddleware;
+//# sourceMappingURL=BookingMiddleware.js.map

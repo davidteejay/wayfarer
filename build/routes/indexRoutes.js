@@ -22,3 +22,4 @@ router.use('/trips', _TripRoutes["default"]);
 router.use('/bookings', _BookingRoutes["default"]);
 var _default = router;
 exports["default"] = _default;
+//# sourceMappingURL=indexRoutes.js.map

@@ -21,3 +21,4 @@ router.post('/login', _AuthMiddleware["default"].generateToken, _UserController[
 router.post('/signup', _UserMiddleware["default"].validateUserData, _UserMiddleware["default"].checkIfEmailExists, _AuthMiddleware["default"].generateToken, _UserController["default"].signUp);
 var _default = router;
 exports["default"] = _default;
+//# sourceMappingURL=UserRoutes.js.map

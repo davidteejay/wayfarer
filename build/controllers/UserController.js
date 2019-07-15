@@ -143,3 +143,4 @@ function () {
 }();
 
 exports["default"] = UserController;
+//# sourceMappingURL=UserController.js.map

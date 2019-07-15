@@ -22,3 +22,4 @@ router.post('/', _AuthMiddleware["default"].validateToken, _AuthMiddleware["defa
 router.patch('/:trip_id', _AuthMiddleware["default"].validateToken, _AuthMiddleware["default"].checkIfUserIsAdmin, _TripMiddleware["default"].checkIfTripExists, _TripController["default"].cancelTrip);
 var _default = router;
 exports["default"] = _default;
+//# sourceMappingURL=TripRoutes.js.map

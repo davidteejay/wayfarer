@@ -185,3 +185,4 @@ function () {
 }();
 
 exports["default"] = TripController;
+//# sourceMappingURL=TripController.js.map

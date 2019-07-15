@@ -205,3 +205,4 @@ describe('Bookings', function () {
     });
   });
 });
+//# sourceMappingURL=bookings.spec.js.map

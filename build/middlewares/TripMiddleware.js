@@ -180,3 +180,4 @@ function () {
 }();
 
 exports["default"] = TripMiddleware;
+//# sourceMappingURL=TripMiddleware.js.map
