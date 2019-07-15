@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node ./build/app.js",
     "dev": "DEBUG=wayfarer:* nodemon --exec babel-node ./src/app.js",
-    "build": "rm -rf ./build && babel ./build ./src -s",
+    "build": "rm -rf ./build && mkdir ./build && babel ./src -d ./build",
     "clean": "rm -rf ./build",
     "test": "nyc mocha --require @babel/register --require @babel/polyfill src/tests/*.spec.js --exit --timeout 10000",
     "generate-lcov": "nyc report --reporter=text-lcov > lcov.info",
