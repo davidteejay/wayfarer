@@ -31,5 +31,5 @@ To configure the project:
 
 ## Links
 
-- Project Homepage: Link to docs will be here
+- Project Homepage: [https://way-farer-api.herokuapp.com](https://way-farer-api.herokuapp.com)
 - Repository: [https://github.com/davidteejay/wayfarer.git](https://github.com/davidteejay/wayfarer.git)
