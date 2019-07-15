@@ -8,10 +8,10 @@ export default class TripController {
   static async addTrip(req, res) {
     try {
       const {
-        user_id, bus_id, origin, destination, trip_date, fare,
+        bus_id, origin, destination, trip_date, fare,
       } = req.body;
 
-      const { rows } = await db.query('INSERT INTO trips (bus_id, origin, destination, trip_date, fare, created_by) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *', [bus_id, origin, destination, trip_date, fare, user_id]);
+      const { rows } = await db.query('INSERT INTO trips (bus_id, origin, destination, trip_date, fare) VALUES ($1, $2, $3, $4, $5) RETURNING *', [bus_id, origin, destination, trip_date, fare]);
 
       return res.status(200).json({
         data: { ...rows[0] },

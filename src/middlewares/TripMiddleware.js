@@ -7,12 +7,11 @@ const db = new Model();
 export default class TripMiddleware {
   static async validateData(req, res, next) {
     try {
-      console.log(req.body)
       const {
-        user_id, bus_id, origin, destination, trip_date, fare,
+        bus_id, origin, destination, trip_date, fare,
       } = req.body;
 
-      if (!user_id || !bus_id || !origin || !destination || !trip_date || !fare) {
+      if (!bus_id || !origin || !destination || !trip_date || !fare) {
         return returnError(res, 'Incomplete trip data', 401);
       }
 

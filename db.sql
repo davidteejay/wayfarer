@@ -17,9 +17,8 @@ CREATE TABLE IF NOT EXISTS buses (
   model VARCHAR NOT NULL, 
   year VARCHAR NOT NULL,
   capacity INTEGER NOT NULL,
-  created_by INTEGER NOT NULL
 );
-INSERT INTO buses (number_plate, manufacturer, model, year, capacity, created_by) VALUES ('KTU19029', 'Toyota', 'Hiace', '2004', 18, 1);
+INSERT INTO buses (number_plate, manufacturer, model, year, capacity) VALUES ('KTU19029', 'Toyota', 'Hiace', '2004', 18);
 
 CREATE TYPE status AS ENUM ('active', 'cancelled');
 CREATE TABLE IF NOT EXISTS trips (
@@ -30,7 +29,6 @@ CREATE TABLE IF NOT EXISTS trips (
   trip_date DATE NOT NULL, 
   fare INTEGER NOT NULL,
   status status NOT NULL DEFAULT 'active',
-  created_by INTEGER NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS bookings (
