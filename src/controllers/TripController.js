@@ -29,7 +29,10 @@ export default class TripController {
       const { rows } = await db.query("UPDATE trips SET status = 'cancelled' WHERE id = $1 RETURNING *", [trip_id]);
 
       return res.status(200).json({
-        data: { ...rows[0] },
+        data: {
+          message: 'Trip cancelled successfully',
+          ...rows[0],
+        },
         status: 'success',
       });
     } catch (err) {

@@ -214,4 +214,50 @@ describe('Bookings', () => {
         });
     });
   });
+
+  describe('PATCH /:booking_id', () => {
+    it('should delete a booking', (done) => {
+      const trip = {
+        user_id: 2,
+      };
+
+      chai
+        .request(app)
+        .patch(`${baseUrl}/1`)
+        .set('access-token', token)
+        .send(trip)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          res.body.should.have.property('status');
+          res.body.should.have.property('data');
+          res.body.data.should.be.a('object');
+          res.body.status.should.be.equal('success');
+          done();
+        });
+    });
+  });
+
+  describe('PATCH /:booking_id', () => {
+    it('should delete a booking', (done) => {
+      const trip = {
+        user_id: 3,
+      };
+
+      chai
+        .request(app)
+        .patch(`${baseUrl}/1`)
+        .set('access-token', token)
+        .send(trip)
+        .end((err, res) => {
+          res.should.have.status(404);
+          res.body.should.be.a('object');
+          res.body.should.have.property('status');
+          res.body.status.should.be.equal('error');
+          res.body.should.have.property('error');
+          res.body.error.should.be.equal('Booking not found');
+          done();
+        });
+    });
+  });
 });

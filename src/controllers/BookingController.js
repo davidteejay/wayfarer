@@ -45,4 +45,22 @@ export default class BookingController {
       return returnError(res, err.message, 500);
     }
   }
+
+  static async deleteBooking(req, res) {
+    try {
+      const { booking_id } = req.params;
+
+      const { rows } = await db.query('DELETE FROM bookings WHERE id = $1', [booking_id]);
+
+      return res.status(200).json({
+        data: {
+          message: 'Booking deleted successfully',
+          ...rows[0],
+        },
+        status: 'success',
+      });
+    } catch (err) {
+      return returnError(res, err.message, 500);
+    }
+  }
 }

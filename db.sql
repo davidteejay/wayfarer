@@ -7,6 +7,9 @@ CREATE TABLE IF NOT EXISTS users (
   is_admin BOOLEAN NOT NULL DEFAULT FALSE
 );
 
+INSERT INTO users (email, first_name, last_name, password, is_admin) VALUES ('chibuokem_2007@gmail.com', 'Chii', 'Buokem', true);
+INSERT INTO users (email, first_name, last_name, password) VALUES ('chi@neptunn.com', 'Chii', 'Buokem');
+
 CREATE TABLE IF NOT EXISTS buses (
   id SERIAL PRIMARY KEY,
   number_plate VARCHAR NOT NULL UNIQUE,
