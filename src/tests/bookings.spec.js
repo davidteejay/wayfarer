@@ -14,7 +14,7 @@ describe('Bookings', () => {
   describe('POST /', () => {
     it('should add a new booking', (done) => {
       const booking = {
-        trip_id: 4,
+        trip_id: 1,
         user_id: 2,
         seat_number: 2,
       };
@@ -39,7 +39,7 @@ describe('Bookings', () => {
   describe('POST /', () => {
     it('should not add a new booking', (done) => {
       const booking = {
-        trip_id: 4,
+        trip_id: 1,
         user_id: 2,
       };
 
@@ -63,7 +63,7 @@ describe('Bookings', () => {
   describe('POST /', () => {
     it('should not add a new booking', (done) => {
       const booking = {
-        trip_id: 4,
+        trip_id: 1,
         user_id: 1,
         seat_number: 2,
       };
@@ -88,7 +88,7 @@ describe('Bookings', () => {
   describe('POST /', () => {
     it('should not add a new booking', (done) => {
       const booking = {
-        trip_id: 4,
+        trip_id: 1,
         user_id: 2,
       };
 
@@ -111,7 +111,7 @@ describe('Bookings', () => {
   describe('POST /', () => {
     it('should not add a new booking', (done) => {
       const booking = {
-        trip_id: 4,
+        trip_id: 1,
         user_id: 2,
       };
 
