@@ -6,9 +6,9 @@ import AuthMiddleware from '../middlewares/AuthMiddleware';
 
 const router = express.Router();
 
-router.get('/', TripController.getTrips);
-// router.get('/', AuthMiddleware.validateToken, TripController.getTrips);
-router.post('/', AuthMiddleware.validateToken, AuthMiddleware.checkIfUserIsAdmin, TripMiddleware.validateData, TripMiddleware.checkIfBusExists, TripController.addTrip);
+router.get('/', AuthMiddleware.validateToken, TripController.getTrips);
+// router.post('/', AuthMiddleware.validateToken, AuthMiddleware.checkIfUserIsAdmin, TripMiddleware.validateData, TripMiddleware.checkIfBusExists, TripController.addTrip);
+router.post('/', AuthMiddleware.validateToken, AuthMiddleware.checkIfUserIsAdmin, TripMiddleware.validateData, TripController.addTrip);
 router.patch('/:trip_id', AuthMiddleware.validateToken, AuthMiddleware.checkIfUserIsAdmin, TripMiddleware.checkIfTripExists, TripController.cancelTrip);
 
 export default router;
