@@ -8,7 +8,7 @@ chai.use(chaiHttp);
 chai.should();
 
 const baseUrl = '/api/v1/bookings';
-const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGVjayI6dHJ1ZSwiaWF0IjoxNTYzMTM1ODM0LCJleHAiOjE1NjMxNzkwMzR9.Lb5jS6GUqnNqMFcud5wRcyPl5wNPSqkvr3PZ9nq-mVg';
+const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGVjayI6dHJ1ZSwiaWF0IjoxNTYzMTk1MDY0LCJleHAiOjE1NjMyMzgyNjR9.uHCJSgljHE6BwEtq2ehWPWOMjCCqu_U7NRe9uQLMfEU';
 
 describe('Bookings', () => {
   describe('POST /', () => {
@@ -150,6 +150,66 @@ describe('Bookings', () => {
           res.body.status.should.be.equal('error');
           res.body.should.have.property('error');
           res.body.error.should.be.equal('Incomplete booking data');
+          done();
+        });
+    });
+  });
+
+  describe('GET /', () => {
+    it('should get all bookings', (done) => {
+      chai
+        .request(app)
+        .get(`${baseUrl}/`)
+        .send({
+          user_id: 2,
+        })
+        .set('access-token', token)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          res.body.should.have.property('status');
+          res.body.should.have.property('data');
+          res.body.data.should.be.a('array');
+          res.body.status.should.be.equal('success');
+          done();
+        });
+    });
+  });
+
+  describe('GET /', () => {
+    it('should get all bookings', (done) => {
+      chai
+        .request(app)
+        .get(`${baseUrl}/`)
+        .send({
+          user_id: 1,
+        })
+        .set('access-token', token)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          res.body.should.have.property('status');
+          res.body.should.have.property('data');
+          res.body.data.should.be.a('array');
+          res.body.status.should.be.equal('success');
+          done();
+        });
+    });
+  });
+
+  describe('GET /', () => {
+    it('should not get all bookings', (done) => {
+      chai
+        .request(app)
+        .get(`${baseUrl}/`)
+        .set('access-token', token)
+        .end((err, res) => {
+          res.should.have.status(404);
+          res.body.should.be.a('object');
+          res.body.should.have.property('status');
+          res.body.status.should.be.equal('error');
+          res.body.should.have.property('error');
+          res.body.error.should.be.equal('User ID not specified');
           done();
         });
     });

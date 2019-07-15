@@ -8,7 +8,7 @@ chai.use(chaiHttp);
 chai.should();
 
 const baseUrl = '/api/v1/trips';
-const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGVjayI6dHJ1ZSwiaWF0IjoxNTYzMTM1ODM0LCJleHAiOjE1NjMxNzkwMzR9.Lb5jS6GUqnNqMFcud5wRcyPl5wNPSqkvr3PZ9nq-mVg';
+const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGVjayI6dHJ1ZSwiaWF0IjoxNTYzMTk1MDY0LCJleHAiOjE1NjMyMzgyNjR9.uHCJSgljHE6BwEtq2ehWPWOMjCCqu_U7NRe9uQLMfEU';
 
 describe('Trips', () => {
   describe('POST /', () => {
@@ -24,7 +24,7 @@ describe('Trips', () => {
 
       chai
         .request(app)
-        .patch(`${baseUrl}/`)
+        .post(`${baseUrl}/`)
         .set('access-token', token)
         .send(trip)
         .end((err, res) => {

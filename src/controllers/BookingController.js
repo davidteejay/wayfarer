@@ -21,4 +21,28 @@ export default class BookingController {
       return returnError(res, err.message, 500);
     }
   }
+
+  static async getBookings(req, res) {
+    try {
+      const { user_id } = req.body;
+      const { is_admin } = req.data;
+      let query = '';
+      let values = [];
+
+      if (is_admin) query = 'SELECT * FROM bookings JOIN trips ON trips.id = bookings.trip_id JOIN users ON bookings.user_id = users.id';
+      else {
+        values = [user_id];
+        query = 'SELECT * FROM bookings JOIN trips ON trips.id = bookings.trip_id JOIN users ON bookings.user_id = users.id WHERE user_id = $1';
+      }
+
+      const { rows } = await db.query(query, values);
+
+      return res.status(200).json({
+        data: rows,
+        status: 'success',
+      });
+    } catch (err) {
+      return returnError(res, err.message, 500);
+    }
+  }
 }
