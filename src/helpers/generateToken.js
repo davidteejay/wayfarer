@@ -12,6 +12,7 @@ const generateToken = async (res, user_id) => {
     const token = await jwt.sign({ user_id }, JWT_SECRET, {
       expiresIn: 43200,
     });
+    console.log(token)
 
     return token;
   } catch (err) {
