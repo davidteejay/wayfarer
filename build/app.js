@@ -5,6 +5,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
+require("@babel/polyfill");
+
 var _express = _interopRequireDefault(require("express"));
 
 var _cookieParser = _interopRequireDefault(require("cookie-parser"));
@@ -26,6 +28,8 @@ var _indexRoutes = _interopRequireDefault(require("./routes/indexRoutes"));
 var _errorHandler = _interopRequireDefault(require("./helpers/errorHandler"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+/* eslint-disable import/no-extraneous-dependencies */
 
 /* eslint-disable no-unused-vars */
 _dotenv["default"].config();

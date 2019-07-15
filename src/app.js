@@ -1,4 +1,7 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-unused-vars */
+import '@babel/polyfill';
+
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
