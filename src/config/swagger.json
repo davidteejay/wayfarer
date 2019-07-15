@@ -203,8 +203,8 @@
         }
       }
     },
-    "/trips/cancel/{trip_id}": {
-      "post": {
+    "/trips/{trip_id}": {
+      "patch": {
         "tags": [
           "Trips"
         ],

@@ -24,7 +24,7 @@ describe('Trips', () => {
 
       chai
         .request(app)
-        .post(`${baseUrl}/`)
+        .patch(`${baseUrl}/`)
         .set('access-token', token)
         .send(trip)
         .end((err, res) => {
@@ -178,7 +178,7 @@ describe('Trips', () => {
     });
   });
 
-  describe('POST /cancel/:trip_id', () => {
+  describe('PATCH /:trip_id', () => {
     it('should cancel a trip', (done) => {
       const trip = {
         user_id: 1,
@@ -186,7 +186,7 @@ describe('Trips', () => {
 
       chai
         .request(app)
-        .post(`${baseUrl}/cancel/1`)
+        .patch(`${baseUrl}/1`)
         .set('access-token', token)
         .send(trip)
         .end((err, res) => {
@@ -201,7 +201,7 @@ describe('Trips', () => {
     });
   });
 
-  describe('POST /cancel/:trip_id', () => {
+  describe('PATCH /:trip_id', () => {
     it('should not cancel a trip', (done) => {
       const trip = {
         user_id: 2,
@@ -209,7 +209,7 @@ describe('Trips', () => {
 
       chai
         .request(app)
-        .post(`${baseUrl}/cancel/1`)
+        .patch(`${baseUrl}/1`)
         .set('access-token', token)
         .send(trip)
         .end((err, res) => {
@@ -224,7 +224,7 @@ describe('Trips', () => {
     });
   });
 
-  describe('POST /cancel/:trip_id', () => {
+  describe('PATCH /:trip_id', () => {
     it('should not cancel a trip', (done) => {
       const trip = {
         user_id: 1,
@@ -232,7 +232,7 @@ describe('Trips', () => {
 
       chai
         .request(app)
-        .post(`${baseUrl}/cancel/1`)
+        .patch(`${baseUrl}/1`)
         .send(trip)
         .end((err, res) => {
           res.should.have.status(401);
@@ -246,7 +246,7 @@ describe('Trips', () => {
     });
   });
 
-  describe('POST /cancel/:trip_id', () => {
+  describe('PATCH /:trip_id', () => {
     it('should not cancel a trip', (done) => {
       const trip = {
         user_id: 1,
@@ -254,7 +254,7 @@ describe('Trips', () => {
 
       chai
         .request(app)
-        .post(`${baseUrl}/cancel/1`)
+        .patch(`${baseUrl}/1`)
         .set('access-token', 'eyJhbGciOiJIUzI1NiIsInR6cCI6IkpXVCJ9.eyJjaGVjayI6dHJ1ZSwiaWF0IjoxNTYyNjY1ODgxLCJleHAiOjE1NjI3MDkwODF9._tCKqBZh9oUFx95PBlRVa93CNOFbuz91ngaU-0r0RAz')
         .send(trip)
         .end((err, res) => {
@@ -269,7 +269,7 @@ describe('Trips', () => {
     });
   });
 
-  describe('POST /cancel/:trip_id', () => {
+  describe('PATCH /:trip_id', () => {
     it('should not cancel a trip', (done) => {
       const trip = {
         user_id: 1,
@@ -277,7 +277,7 @@ describe('Trips', () => {
 
       chai
         .request(app)
-        .post(`${baseUrl}/cancel/1000`)
+        .patch(`${baseUrl}/1000`)
         .set('access-token', token)
         .send(trip)
         .end((err, res) => {
