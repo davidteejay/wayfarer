@@ -11,19 +11,19 @@ const { JWT_SECRET } = process.env;
 const db = new Model();
 
 export default class AuthMiddleware {
-  static async generateToken(req, res, next) {
-    try {
-      const token = await jwt.sign({ check: true }, JWT_SECRET, {
-        expiresIn: 43200,
-      });
+  // static async generateToken(req, res, next) {
+  //   try {
+  //     const token = await jwt.sign({ user_id:  }, JWT_SECRET, {
+  //       expiresIn: 43200,
+  //     });
 
-      req.data = { ...req.data, token };
+  //     req.data = { ...req.data, token };
 
-      return next();
-    } catch (err) {
-      return returnError(res, err.message, 500);
-    }
-  }
+  //     return next();
+  //   } catch (err) {
+  //     return returnError(res, err.message, 500);
+  //   }
+  // }
 
   static async validateToken(req, res, next) {
     try {
@@ -31,8 +31,10 @@ export default class AuthMiddleware {
 
       if (token) {
         await jwt.verify(token, JWT_SECRET, (err, decoded) => {
-          if (err || !decoded || !decoded.check) return returnError(res, 'Invalid Token', 401);
+          console.warn(decoded);
+          if (err || !decoded || !decoded.user_id) return returnError(res, 'Invalid Token', 401);
 
+          req.data = { ...req.data, user_id: decoded.user_id };
           return next();
         });
       } else return returnError(res, 'Token Not Found', 401);

@@ -8,10 +8,11 @@ export default class BookingController {
   static async addBooking(req, res) {
     try {
       const {
-        user_id, trip_id, seat_number,
+        trip_id, seat_number,
       } = req.body;
+      const { user_id } = req.data;
 
-      const { rows } = await db.query('INSERT INTO bookings (user_id, trip_id, seat_number) VALUES ($1, $2, $3) RETURNING *', [user_id, trip_id, seat_number]);
+      const { rows } = await db.query('INSERT INTO bookings (trip_id, seat_number, user_id) VALUES ($1, $2, $3) RETURNING *', [trip_id, seat_number, user_id]);
 
       return res.status(200).json({
         data: { ...rows[0] },
@@ -24,8 +25,7 @@ export default class BookingController {
 
   static async getBookings(req, res) {
     try {
-      const { user_id } = req.body;
-      const { is_admin } = req.data;
+      const { is_admin, user_id } = req.data;
       let query = '';
       let values = [];
 

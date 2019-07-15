@@ -7,10 +7,9 @@ const db = new Model();
 export default class BookingMiddleware {
   static async validateData(req, res, next) {
     try {
-      console.log(req.body)
-      const { user_id, trip_id } = req.body;
+      const { trip_id } = req.body;
 
-      if (!user_id || !trip_id) {
+      if (!trip_id) {
         return returnError(res, 'Incomplete booking data', 401);
       }
 
@@ -40,25 +39,9 @@ export default class BookingMiddleware {
     }
   }
 
-  static async checkIfUserHasBooked(req, res, next) {
-    try {
-      const { trip_id, user_id } = req.body;
-
-      const { rows } = await db.query('SELECT * FROM bookings WHERE trip_id = $1 AND user_id = $2', [trip_id, user_id]);
-
-      if (rows.length > 0) {
-        return returnError(res, 'You have already booked this trip', 401);
-      }
-
-      return next();
-    } catch (err) {
-      return returnError(res, err.message, 500);
-    }
-  }
-
   static async checkIfUserIsAdmin(req, res, next) {
     try {
-      const { user_id } = req.body;
+      const { user_id } = req.data;
 
       if (!user_id) {
         return returnError(res, 'User ID not specified', 404);
@@ -78,7 +61,7 @@ export default class BookingMiddleware {
 
   static async checkIfUserHasBooking(req, res, next) {
     try {
-      const { user_id } = req.body;
+      const { user_id } = req.data;
       const { booking_id } = req.params;
 
       const { rows } = await db.query('SELECT * FROM bookings WHERE user_id = $1 AND id = $2', [user_id, booking_id]);

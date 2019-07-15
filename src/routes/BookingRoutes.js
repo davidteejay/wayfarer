@@ -7,7 +7,7 @@ import BookingController from '../controllers/BookingController';
 const router = express.Router();
 
 router.get('/', AuthMiddleware.validateToken, BookingMiddleware.checkIfUserIsAdmin, BookingController.getBookings);
-router.post('/', AuthMiddleware.validateToken, BookingMiddleware.validateData, BookingMiddleware.checkIfUserHasBooked, BookingMiddleware.checkIfSeatIsTaken, BookingController.addBooking);
+router.post('/', AuthMiddleware.validateToken, BookingMiddleware.validateData, BookingMiddleware.checkIfSeatIsTaken, BookingController.addBooking);
 router.delete('/:booking_id', AuthMiddleware.validateToken, BookingMiddleware.checkIfUserHasBooking, BookingController.deleteBooking);
 
 export default router;
