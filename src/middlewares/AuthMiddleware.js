@@ -27,7 +27,7 @@ export default class AuthMiddleware {
 
   static async validateToken(req, res, next) {
     try {
-      const token = req.headers['access-token'];
+      const { token } = req.body;
 
       if (token) {
         await jwt.verify(token, JWT_SECRET, (err, decoded) => {

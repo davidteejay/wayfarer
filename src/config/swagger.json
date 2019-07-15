@@ -7,20 +7,12 @@
   },
   "host": "localhost:5000",
   "basePath": "/api/v1",
-  "securityDefinitions": {
-    "access-token": {
-      "type": "apiKey",
-      "name": "access-token",
-      "in": "header",
-      "authorizationUrl": "http://localhost:5000/api/v1/auth/verify"
-    }
-  },
   "schemes": [
     "http",
     "https"
   ],
   "paths": {
-    "/auth/login": {
+    "/auth/signin": {
       "post": {
         "tags": [
           "Users"
@@ -124,15 +116,12 @@
             }
           },
           {
-            "name": "api_key",
-            "in": "header",
+            "name": "token",
+            "in": "body",
             "required": true,
             "type": "string"
           }
         ],
-        "security": {
-          "access-token": []
-        },
         "consumes": "application/json",
         "produces": "application/json",
         "content": "application/json",
@@ -169,15 +158,12 @@
             }
           },
           {
-            "name": "api_key",
-            "in": "header",
-            "required": true,
-            "type": "string"
+            "in": "body",
+            "name": "token",
+            "type": "string",
+            "required": "true"
           }
         ],
-        "security": {
-          "access-token": []
-        },
         "consumes": "application/json",
         "produces": "application/json",
         "content": "application/json",
@@ -228,20 +214,15 @@
                 "user_id": {
                   "type": "integer",
                   "required": true
+                },
+                "token": {
+                  "type": "string",
+                  "required": "true"
                 }
               }
             }
-          },
-          {
-            "name": "api_key",
-            "in": "header",
-            "required": true,
-            "type": "string"
           }
         ],
-        "security": {
-          "access-token": []
-        },
         "consumes": "application/json",
         "produces": "application/json",
         "content": "application/json",
@@ -296,6 +277,10 @@
                   "type": "integer",
                   "required": true
                 },
+                "token": {
+                  "type": "string",
+                  "required": true
+                },
                 "trip_id": {
                   "type": "integer",
                   "required": true
@@ -305,17 +290,8 @@
                 }
               }
             }
-          },
-          {
-            "name": "api_key",
-            "in": "header",
-            "required": true,
-            "type": "string"
           }
         ],
-        "security": {
-          "access-token": []
-        },
         "consumes": "application/json",
         "produces": "application/json",
         "content": "application/json",
@@ -364,20 +340,15 @@
                 "user_id": {
                   "type": "integer",
                   "required": true
+                },
+                "token": {
+                  "type": "string",
+                  "required": "true"
                 }
               }
             }
-          },
-          {
-            "name": "api_key",
-            "in": "header",
-            "required": true,
-            "type": "string"
           }
         ],
-        "security": {
-          "access-token": []
-        },
         "consumes": "application/json",
         "produces": "application/json",
         "content": "application/json",
@@ -439,20 +410,15 @@
                 "user_id": {
                   "type": "integer",
                   "required": true
+                },
+                "token": {
+                  "type": "string",
+                  "required": true
                 }
               }
             }
-          },
-          {
-            "name": "api_key",
-            "in": "header",
-            "required": true,
-            "type": "string"
           }
         ],
-        "security": {
-          "access-token": []
-        },
         "consumes": "application/json",
         "produces": "application/json",
         "content": "application/json",

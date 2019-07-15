@@ -6,7 +6,7 @@ import AuthMiddleware from '../middlewares/AuthMiddleware';
 
 const router = express.Router();
 
-router.post('/login', AuthMiddleware.generateToken, UserController.signIn);
+router.post('/signin', AuthMiddleware.generateToken, UserController.signIn);
 router.post('/signup', UserMiddleware.validateUserData, UserMiddleware.checkIfEmailExists, AuthMiddleware.generateToken, UserController.signUp);
 
 export default router;
