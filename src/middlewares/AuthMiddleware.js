@@ -30,7 +30,7 @@ export default class AuthMiddleware {
 
   static async checkIfUserIsAdmin(req, res, next) {
     try {
-      const { user_id } = req.body;
+      const { user_id } = req.data;
 
       const { rows } = await db.query('SELECT * FROM users WHERE id = $1', [user_id]);
 

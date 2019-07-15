@@ -27,14 +27,13 @@ export default class BookingController {
   static async getBookings(req, res) {
     try {
       const { is_admin, user_id } = req.data;
-      let query = '';
+      let query = 'SELECT * FROM bookings JOIN trips ON trips.id = bookings.trip_id JOIN users ON bookings.user_id = users.id';
       let values = [];
 
-      if (is_admin) query = 'SELECT * FROM bookings JOIN trips ON trips.id = bookings.trip_id JOIN users ON bookings.user_id = users.id';
-      else {
-        values = [user_id];
-        query = 'SELECT * FROM bookings JOIN trips ON trips.id = bookings.trip_id JOIN users ON bookings.user_id = users.id WHERE user_id = $1';
-      }
+      // if (!is_admin) {
+      //   values = [user_id];
+      //   query = 'SELECT * FROM bookings JOIN trips ON trips.id = bookings.trip_id JOIN users ON bookings.user_id = users.id WHERE user_id = $1';
+      // }
 
       const { rows } = await db.query(query, values);
 

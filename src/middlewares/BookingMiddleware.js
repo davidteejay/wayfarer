@@ -43,10 +43,6 @@ export default class BookingMiddleware {
     try {
       const { user_id } = req.data;
 
-      if (!user_id) {
-        return returnError(res, 'User ID not specified', 404);
-      }
-
       const { rows } = await db.query('SELECT * FROM users WHERE id = $1', [user_id]);
 
       req.data = {
