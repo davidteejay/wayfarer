@@ -74,4 +74,21 @@ export default class BookingMiddleware {
       return returnError(res, err.message, 500);
     }
   }
+
+  static async checkIfUserHasBooking(req, res, next) {
+    try {
+      const { user_id } = req.body;
+      const { booking_id } = req.params;
+
+      const { rows } = await db.query('SELECT * FROM bookings WHERE user_id = $1 AND id = $2', [user_id, booking_id]);
+
+      if (rows.length < 1) {
+        return returnError(res, 'Booking not found', 404);
+      }
+
+      return next();
+    } catch (err) {
+      return returnError(res, err.message, 500);
+    }
+  }
 }

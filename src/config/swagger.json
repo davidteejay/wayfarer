@@ -252,8 +252,10 @@
               "type": "object",
               "properties": {
                 "data": {
-                  "type": "array",
-                  "items": {}
+                  "type": "object",
+                  "properties": {
+                    "$ref": "#/definitions/Trip"
+                  }
                 },
                 "status": {
                   "type": "string"
@@ -393,6 +395,81 @@
                   "status": {
                     "type": "string"
                   }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Incomplete trip data",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/bookings/{booking_id}": {
+      "patch": {
+        "tags": [
+          "Bookings"
+        ],
+        "summary": "Allows a user to delete a booking",
+        "parameters": [
+          {
+            "in": "url",
+            "name": "booking_id",
+            "required": "true",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": "true",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "user_id": {
+                  "type": "integer",
+                  "required": true
+                }
+              }
+            }
+          },
+          {
+            "name": "api_key",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "security": {
+          "access-token": []
+        },
+        "consumes": "application/json",
+        "produces": "application/json",
+        "content": "application/json",
+        "responses": {
+          "200": {
+            "description": "Deleted Successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "$ref": "#/definitions/Booking"
+                  }
+                },
+                "status": {
+                  "type": "string"
                 }
               }
             }
