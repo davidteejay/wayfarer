@@ -13,9 +13,10 @@ export default class BookingController {
       const { user_id } = req.data;
 
       const { rows } = await db.query('INSERT INTO bookings (trip_id, seat_number, user_id) VALUES ($1, $2, $3) RETURNING *', [trip_id, seat_number, user_id]);
+      const user = await db.query('SELECT first_name, last_name, email FROM users WHERE id = $1', [user_id]);
 
       return res.status(200).json({
-        data: { ...rows[0] },
+        data: { ...rows[0], ...user.rows[0] },
         status: 'success',
       });
     } catch (err) {
