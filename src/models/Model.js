@@ -7,9 +7,7 @@ dotenv.config();
 
 export default class Model {
   constructor() {
-    this.pool = new Pool({
-      connectionString: process.env.PG_CONNECTION_STRING,
-    });
+    this.pool = new Pool();
 
     this.pool.on('connect', () => {
       debug('wayfarer:pool')('DB Connection Successful');

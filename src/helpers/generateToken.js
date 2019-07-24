@@ -7,9 +7,9 @@ import returnError from './errorHandler';
 dotenv.config();
 const { JWT_SECRET } = process.env;
 
-const generateToken = async (res, user_id) => {
+const generateToken = async (res, user) => {
   try {
-    const token = await jwt.sign({ user_id }, JWT_SECRET, {
+    const token = await jwt.sign({ user }, JWT_SECRET, {
       expiresIn: 43200,
     });
 

@@ -1,4 +1,7 @@
+/* eslint-disable consistent-return */
 /* eslint-disable camelcase */
+import Joi from 'joi';
+
 import Model from '../models/Model';
 import returnError from '../helpers/errorHandler';
 
@@ -7,13 +10,18 @@ const db = new Model();
 export default class BookingMiddleware {
   static async validateData(req, res, next) {
     try {
-      const { trip_id } = req.body;
+      const schema = Joi.object().keys({
+        trip_id: Joi.number().positive().required(),
+        seat_number: Joi.number().positive().optional(),
+        token: Joi.string().trim().min(3).required(),
+      });
 
-      if (!trip_id) {
-        return returnError(res, 'Incomplete booking data', 401);
-      }
-
-      return next();
+      await schema.validate({ ...req.body }, { abortEarly: false })
+        .then(() => next())
+        .catch((error) => {
+          const errors = error.details.map(d => d.message);
+          return returnError(res, errors, 422);
+        });
     } catch (err) {
       return returnError(res, err.message, 500);
     }
@@ -32,22 +40,6 @@ export default class BookingMiddleware {
 
         return next();
       }
-
-      return next();
-    } catch (err) {
-      return returnError(res, err.message, 500);
-    }
-  }
-
-  static async checkIfUserIsAdmin(req, res, next) {
-    try {
-      const { user_id } = req.data;
-
-      const { rows } = await db.query('SELECT * FROM users WHERE id = $1', [user_id]);
-
-      req.data = {
-        is_admin: rows[0].is_admin,
-      };
 
       return next();
     } catch (err) {

@@ -10,6 +10,9 @@ export default class TripController {
       const {
         bus_id, origin, destination, trip_date, fare,
       } = req.body;
+      const { user } = req.data;
+
+      if (!user.is_admin) return returnError(res, 'You don\'t have access to perform this operation', 401);
 
       const { rows } = await db.query('INSERT INTO trips (bus_id, origin, destination, trip_date, fare) VALUES ($1, $2, $3, $4, $5) RETURNING *', [bus_id, origin, destination, trip_date, fare]);
 
@@ -25,6 +28,9 @@ export default class TripController {
   static async cancelTrip(req, res) {
     try {
       const { trip_id } = req.params;
+      const { user } = req.data;
+
+      if (!user.is_admin) return returnError(res, 'You don\'t have access to perform this operation', 401);
 
       const { rows } = await db.query("UPDATE trips SET status = 'cancelled' WHERE id = $1 RETURNING *", [trip_id]);
 
@@ -42,17 +48,15 @@ export default class TripController {
 
   static async getTrips(req, res) {
     try {
-      const { origin, destination } = req.query;
+      const { search } = req.query;
       let query = 'SELECT origin, destination, trip_date, fare, status, number_plate as bus_plate_number, manufacturer AS bus_manufacturer, model AS bus_model, capacity AS bus_capacity FROM trips JOIN buses ON trips.bus_id = buses.id';
       let values = [];
 
-      if (origin) {
-        query = 'SELECT origin, destination, trip_date, fare, status, number_plate as bus_plate_number, manufacturer AS bus_manufacturer, model AS bus_model, capacity AS bus_capacity FROM trips JOIN buses ON trips.bus_id = buses.id WHERE origin LIKE $1';
-        values = [`%${origin}`];
-      } else if (destination) {
-        query = 'SELECT origin, destination, trip_date, fare, status, number_plate as bus_plate_number, manufacturer AS bus_manufacturer, model AS bus_model, capacity AS bus_capacity FROM trips JOIN buses ON trips.bus_id = buses.id WHERE destination LIKE $1';
-        values = [`%${destination}`];
+      if (search) {
+        query = 'SELECT origin, destination, trip_date, fare, status, number_plate as bus_plate_number, manufacturer AS bus_manufacturer, model AS bus_model, capacity AS bus_capacity FROM trips JOIN buses ON trips.bus_id = buses.id WHERE origin LIKE $1 OR destination LIKE $1';
+        values = [`%${search}`];
       }
+
       const { rows } = await db.query(query, values);
       return res.status(200).json({
         data: rows,
