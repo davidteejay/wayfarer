@@ -10,12 +10,28 @@ chai.should();
 const baseUrl = '/api/v1/auth';
 
 describe('Users', () => {
+  describe('GET /', () => {
+    it('should not sign the user up', (done) => {
+      chai
+        .request(app)
+        .get(`${baseUrl}/`)
+        .end((err, res) => {
+          res.should.have.status(404);
+          res.body.should.be.a('object');
+          res.body.should.have.property('status');
+          res.body.status.should.be.equal('error');
+          res.body.should.have.property('error');
+          res.body.error.should.be.equal('Incorrect Route');
+          done();
+        });
+    });
+  });
   // describe('POST /signup', () => {
   //   it('should sign the user up', (done) => {
   //     const user = {
   //       first_name: 'Chibuokem',
   //       last_name: 'Onyekwelu',
-  //       email: 'chibuokem2007@gmail.com',
+  //       email: 'chibuokem_tolu@hotmail.com',
   //       password: '00000000',
   //     };
 
@@ -41,7 +57,7 @@ describe('Users', () => {
         first_name: 'Chibuokem',
         last_name: 'Onyekwelu',
         email: 'chibuokem2007@gmail.com',
-        password: 'chibuokem_tolu',
+        password: '00000000',
       };
 
       chai
@@ -72,12 +88,11 @@ describe('Users', () => {
         .post(`${baseUrl}/signup`)
         .send(user)
         .end((err, res) => {
-          res.should.have.status(401);
+          res.should.have.status(422);
           res.body.should.be.a('object');
           res.body.should.have.property('status');
           res.body.status.should.be.equal('error');
           res.body.should.have.property('error');
-          res.body.error.should.be.equal('Incomplete user data');
           done();
         });
     });
@@ -92,7 +107,7 @@ describe('Users', () => {
 
       chai
         .request(app)
-        .post(`${baseUrl}/login`)
+        .post(`${baseUrl}/signin`)
         .send(user)
         .end((err, res) => {
           res.should.have.status(200);
@@ -100,7 +115,6 @@ describe('Users', () => {
           res.body.should.have.property('status');
           res.body.should.have.property('data');
           res.body.data.should.be.a('object');
-          res.body.data.should.have.property('id');
           res.body.data.should.have.property('token');
           done();
         });
@@ -116,7 +130,7 @@ describe('Users', () => {
 
       chai
         .request(app)
-        .post(`${baseUrl}/login`)
+        .post(`${baseUrl}/signin`)
         .send(user)
         .end((err, res) => {
           res.should.have.status(404);

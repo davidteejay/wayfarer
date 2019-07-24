@@ -10,13 +10,12 @@ export default class BookingController {
       const {
         trip_id, seat_number,
       } = req.body;
-      const { user_id } = req.data;
+      const { user } = req.data;
 
-      const { rows } = await db.query('INSERT INTO bookings (trip_id, seat_number, user_id) VALUES ($1, $2, $3) RETURNING *', [trip_id, seat_number, user_id]);
-      const user = await db.query('SELECT first_name, last_name, email FROM users WHERE id = $1', [user_id]);
+      const { rows } = await db.query('INSERT INTO bookings (trip_id, seat_number, user_id) VALUES ($1, $2, $3) RETURNING *', [trip_id, seat_number, user.id]);
 
       return res.status(200).json({
-        data: { ...rows[0], ...user.rows[0] },
+        data: { ...rows[0], ...user },
         status: 'success',
       });
     } catch (err) {
@@ -26,17 +25,16 @@ export default class BookingController {
 
   static async getBookings(req, res) {
     try {
-      const { is_admin, user_id } = req.data;
+      const { user } = req.data;
       let query = 'SELECT * FROM bookings JOIN trips ON trips.id = bookings.trip_id JOIN users ON bookings.user_id = users.id';
       let values = [];
 
-      // if (!is_admin) {
-      //   values = [user_id];
-      //   query = 'SELECT * FROM bookings JOIN trips ON trips.id = bookings.trip_id JOIN users ON bookings.user_id = users.id WHERE user_id = $1';
-      // }
+      if (!user.is_admin) {
+        values = [user.id];
+        query = 'SELECT * FROM bookings JOIN trips ON trips.id = bookings.trip_id JOIN users ON bookings.user_id = users.id WHERE user_id = $1';
+      }
 
       const { rows } = await db.query(query, values);
-
       return res.status(200).json({
         data: rows,
         status: 'success',

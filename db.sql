@@ -8,7 +8,6 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 INSERT INTO users (email, first_name, last_name, password, is_admin) VALUES ('chibuokem_2007@gmail.com', 'Chii', 'Buokem', '00000000', true);
-INSERT INTO users (email, first_name, last_name, password) VALUES ('chi@neptunn.com', 'Chii', 'Buokem', '00000000');
 
 CREATE TABLE IF NOT EXISTS buses (
   id SERIAL PRIMARY KEY,
@@ -37,5 +36,5 @@ CREATE TABLE IF NOT EXISTS bookings (
   trip_id INTEGER NOT NULL,
   created_on DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
   seat_number INTEGER,
-  PRIMARY KEY(user_id, trip_id)
+  PRIMARY KEY(id, user_id, trip_id)
 );

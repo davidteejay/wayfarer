@@ -4,11 +4,9 @@ import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 
 import returnError from '../helpers/errorHandler';
-import Model from '../models/Model';
 
 dotenv.config();
 const { JWT_SECRET } = process.env;
-const db = new Model();
 
 export default class AuthMiddleware {
   static async validateToken(req, res, next) {
@@ -17,28 +15,13 @@ export default class AuthMiddleware {
 
       if (token) {
         await jwt.verify(token, JWT_SECRET, (err, decoded) => {
-          if (err || !decoded || !decoded.user_id) return returnError(res, 'Invalid Token', 401);
+          if (err || !decoded) return returnError(res, 'Invalid Token', 401);
 
-          req.data = { ...req.data, user_id: decoded.user_id };
+          const { user } = decoded;
+          req.data = { ...req.data, user };
           return next();
         });
       } else return returnError(res, 'Token Not Found', 401);
-    } catch (err) {
-      return returnError(res, err.message, 500);
-    }
-  }
-
-  static async checkIfUserIsAdmin(req, res, next) {
-    try {
-      const { user_id } = req.data;
-
-      const { rows } = await db.query('SELECT * FROM users WHERE id = $1', [user_id]);
-
-      if (rows.length < 1 || !rows[0].is_admin) {
-        return returnError(res, 'Access Denied', 401);
-      }
-
-      return next();
     } catch (err) {
       return returnError(res, err.message, 500);
     }
