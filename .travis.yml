@@ -14,11 +14,11 @@ env:
     - PGPORT: 5432
 services:
   - postgresql
-postgres:
-  - postgresql: &postgresql
-  - adapter: postgresql
-  - database: wayfarer_test
-  - username: chi
+# postgres:
+#   - postgresql: &postgresql
+#   - adapter: postgresql
+#   - database: wayfarer_test
+#   - username: chi
 before_script:
   - psql -c "CREATE DATABASE wayfarer_test;" -U postgres
   - psql -c "CREATE USER chi WITH PASSWORD null;" -U postgres
