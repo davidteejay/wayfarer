@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS users (
+CREATE TABLE IF NOT EXISTS "users" (
   id SERIAL PRIMARY KEY,
   email VARCHAR NOT NULL UNIQUE,
   first_name VARCHAR NOT NULL,
@@ -9,18 +9,18 @@ CREATE TABLE IF NOT EXISTS users (
 
 INSERT INTO users (email, first_name, last_name, password, is_admin) VALUES ('chibuokem_2007@gmail.com', 'Chii', 'Buokem', '00000000', true);
 
-CREATE TABLE IF NOT EXISTS buses (
+CREATE TABLE IF NOT EXISTS "buses" (
   id SERIAL PRIMARY KEY,
   number_plate VARCHAR NOT NULL UNIQUE,
   manufacturer VARCHAR NOT NULL,
   model VARCHAR NOT NULL, 
   year VARCHAR NOT NULL,
-  capacity INTEGER NOT NULL,
+  capacity INTEGER NOT NULL
 );
 INSERT INTO buses (number_plate, manufacturer, model, year, capacity) VALUES ('KTU19029', 'Toyota', 'Hiace', '2004', 18);
 
-CREATE TYPE status AS ENUM ('active', 'cancelled');
-CREATE TABLE IF NOT EXISTS trips (
+CREATE TYPE "status" AS ENUM ('active', 'cancelled');
+CREATE TABLE IF NOT EXISTS "trips" (
   id SERIAL PRIMARY KEY,
   bus_id INTEGER NOT NULL,
   origin VARCHAR NOT NULL,
@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS trips (
   status status NOT NULL DEFAULT 'active'
 );
 
-CREATE TABLE IF NOT EXISTS bookings (
+CREATE TABLE IF NOT EXISTS "bookings" (
   id SERIAL,
   user_id INTEGER NOT NULL,
   trip_id INTEGER NOT NULL,
