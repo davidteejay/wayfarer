@@ -12,7 +12,7 @@ export default class UserController {
       const { rows } = await db.query('SELECT * FROM users WHERE email = $1 AND password = $2', [email, password]);
 
       if (rows.length > 0) {
-        const token = await generateToken(res, rows[0].id);
+        const token = await generateToken(res, rows[0]);
 
         return res.status(200).json({
           data: { ...rows[0], token },
@@ -33,7 +33,7 @@ export default class UserController {
       } = req.body;
 
       const { rows } = await db.query('INSERT INTO users (first_name, last_name, email, password) VALUES ($1, $2, $3, $4) RETURNING *', [first_name, last_name, email, password]);
-      const token = await generateToken(res, rows[0].id);
+      const token = await generateToken(res, rows[0]);
 
       return res.status(200).json({
         data: { ...rows[0], token },

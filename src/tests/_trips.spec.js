@@ -8,24 +8,25 @@ chai.use(chaiHttp);
 chai.should();
 
 const baseUrl = '/api/v1/trips';
-const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGVjayI6dHJ1ZSwiaWF0IjoxNTYzMTk1MDY0LCJleHAiOjE1NjMyMzgyNjR9.uHCJSgljHE6BwEtq2ehWPWOMjCCqu_U7NRe9uQLMfEU';
+const adminToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJlbWFpbCI6ImNoaWJ1b2tlbV90b2x1QGhvdG1haWwuY29tIiwiZmlyc3RfbmFtZSI6IkNoaWJ1b2tlbSIsImxhc3RfbmFtZSI6Ik9ueWVrd2VsdSIsInBhc3N3b3JkIjoiMDAwMDAwMDAiLCJpc19hZG1pbiI6dHJ1ZX0sImlhdCI6MTU2Mzk5Mjg4NiwiZXhwIjoxNTY0MDM2MDg2fQ.dPc_9ifwLj8kehWpUxuW8m2AQ758Aoa9rFAQ6A4Ethw';
+const userToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoyLCJlbWFpbCI6ImNoaWJ1b2tlbTIwMDdAZ21haWwuY29tIiwiZmlyc3RfbmFtZSI6IkNoaWJ1b2tlbSIsImxhc3RfbmFtZSI6Ik9ueWVrd2VsdSIsInBhc3N3b3JkIjoiMDAwMDAwMDAiLCJpc19hZG1pbiI6ZmFsc2V9LCJpYXQiOjE1NjM5OTI5MzAsImV4cCI6MTU2NDAzNjEzMH0.LQcVEap-KY1n_US90P1PBF_PXrMA_vzw7lC-xrHFHdg';
+const invalidToken = 'eyJhbGciOiJIUzI1NiIsInR6cCI6IkpXVCJ9.eyJjaGVjayI6dHJ1ZSwiaWF0IjoxNTYyNjY1ODgxLCJleHAiOjE1NjI3MDkwODF9._tCKqBZh9oUFx95PBlRVa93CNOFbuz91ngaU-0r0RAz';
 
 describe('Trips', () => {
   describe('POST /', () => {
     it('should add new trip', (done) => {
       const trip = {
         bus_id: 1,
-        user_id: 1,
         origin: 'Dubai',
         destination: 'Ojuelegba',
         fare: 200000,
         trip_date: '2019-07-20',
+        token: adminToken,
       };
 
       chai
         .request(app)
         .post(`${baseUrl}/`)
-        .set('access-token', token)
         .send(trip)
         .end((err, res) => {
           res.should.have.status(200);
@@ -45,17 +46,16 @@ describe('Trips', () => {
     it('should not add new trip', (done) => {
       const trip = {
         bus_id: 1,
-        user_id: 2,
         origin: 'Dubai',
         destination: 'Ojuelegba',
         fare: 200000,
         trip_date: '2019-07-20',
+        token: userToken,
       };
 
       chai
         .request(app)
         .post(`${baseUrl}/`)
-        .set('access-token', token)
         .send(trip)
         .end((err, res) => {
           res.should.have.status(401);
@@ -63,7 +63,7 @@ describe('Trips', () => {
           res.body.should.have.property('status');
           res.body.status.should.be.equal('error');
           res.body.should.have.property('error');
-          res.body.error.should.be.equal('Access Denied');
+          res.body.error.should.be.equal('You don\'t have access to perform this operation');
           done();
         });
     });
@@ -73,7 +73,6 @@ describe('Trips', () => {
     it('should not add new trip', (done) => {
       const trip = {
         bus_id: 1,
-        user_id: 1,
         origin: 'Dubai',
         destination: 'Ojuelegba',
         fare: 200000,
@@ -100,17 +99,16 @@ describe('Trips', () => {
     it('should not add new trip', (done) => {
       const trip = {
         bus_id: 1,
-        user_id: 1,
         origin: 'Dubai',
         destination: 'Ojuelegba',
         fare: 200000,
         trip_date: '2019-07-20',
+        token: invalidToken,
       };
 
       chai
         .request(app)
         .post(`${baseUrl}/`)
-        .set('access-token', 'eyJhbGciOiJIUzI1NiIsInR6cCI6IkpXVCJ9.eyJjaGVjayI6dHJ1ZSwiaWF0IjoxNTYyNjY1ODgxLCJleHAiOjE1NjI3MDkwODF9._tCKqBZh9oUFx95PBlRVa93CNOFbuz91ngaU-0r0RAz')
         .send(trip)
         .end((err, res) => {
           res.should.have.status(401);
@@ -128,23 +126,21 @@ describe('Trips', () => {
     it('should not add new trip', (done) => {
       const trip = {
         bus_id: 1,
-        user_id: 1,
         fare: 200000,
         trip_date: '2019-07-20',
+        token: adminToken,
       };
 
       chai
         .request(app)
         .post(`${baseUrl}/`)
-        .set('access-token', token)
         .send(trip)
         .end((err, res) => {
-          res.should.have.status(401);
+          res.should.have.status(422);
           res.body.should.be.a('object');
           res.body.should.have.property('status');
           res.body.status.should.be.equal('error');
           res.body.should.have.property('error');
-          res.body.error.should.be.equal('Incomplete trip data');
           done();
         });
     });
@@ -154,17 +150,16 @@ describe('Trips', () => {
     it('should not add new trip', (done) => {
       const trip = {
         bus_id: 2,
-        user_id: 1,
         origin: 'Dubai',
         destination: 'Ojuelegba',
         fare: 200000,
         trip_date: '2019-07-20',
+        token: adminToken,
       };
 
       chai
         .request(app)
         .post(`${baseUrl}/`)
-        .set('access-token', token)
         .send(trip)
         .end((err, res) => {
           res.should.have.status(404);
@@ -181,13 +176,12 @@ describe('Trips', () => {
   describe('PATCH /:trip_id', () => {
     it('should cancel a trip', (done) => {
       const trip = {
-        user_id: 1,
+        token: adminToken,
       };
 
       chai
         .request(app)
         .patch(`${baseUrl}/1`)
-        .set('access-token', token)
         .send(trip)
         .end((err, res) => {
           res.should.have.status(200);
@@ -204,30 +198,7 @@ describe('Trips', () => {
   describe('PATCH /:trip_id', () => {
     it('should not cancel a trip', (done) => {
       const trip = {
-        user_id: 2,
-      };
-
-      chai
-        .request(app)
-        .patch(`${baseUrl}/1`)
-        .set('access-token', token)
-        .send(trip)
-        .end((err, res) => {
-          res.should.have.status(401);
-          res.body.should.be.a('object');
-          res.body.should.have.property('status');
-          res.body.status.should.be.equal('error');
-          res.body.should.have.property('error');
-          res.body.error.should.be.equal('Access Denied');
-          done();
-        });
-    });
-  });
-
-  describe('PATCH /:trip_id', () => {
-    it('should not cancel a trip', (done) => {
-      const trip = {
-        user_id: 1,
+        token: userToken,
       };
 
       chai
@@ -240,7 +211,7 @@ describe('Trips', () => {
           res.body.should.have.property('status');
           res.body.status.should.be.equal('error');
           res.body.should.have.property('error');
-          res.body.error.should.be.equal('Token Not Found');
+          res.body.error.should.be.equal('You don\'t have access to perform this operation');
           done();
         });
     });
@@ -249,36 +220,12 @@ describe('Trips', () => {
   describe('PATCH /:trip_id', () => {
     it('should not cancel a trip', (done) => {
       const trip = {
-        user_id: 1,
-      };
-
-      chai
-        .request(app)
-        .patch(`${baseUrl}/1`)
-        .set('access-token', 'eyJhbGciOiJIUzI1NiIsInR6cCI6IkpXVCJ9.eyJjaGVjayI6dHJ1ZSwiaWF0IjoxNTYyNjY1ODgxLCJleHAiOjE1NjI3MDkwODF9._tCKqBZh9oUFx95PBlRVa93CNOFbuz91ngaU-0r0RAz')
-        .send(trip)
-        .end((err, res) => {
-          res.should.have.status(401);
-          res.body.should.be.a('object');
-          res.body.should.have.property('status');
-          res.body.status.should.be.equal('error');
-          res.body.should.have.property('error');
-          res.body.error.should.be.equal('Invalid Token');
-          done();
-        });
-    });
-  });
-
-  describe('PATCH /:trip_id', () => {
-    it('should not cancel a trip', (done) => {
-      const trip = {
-        user_id: 1,
+        token: adminToken,
       };
 
       chai
         .request(app)
         .patch(`${baseUrl}/1000`)
-        .set('access-token', token)
         .send(trip)
         .end((err, res) => {
           res.should.have.status(404);
@@ -293,11 +240,15 @@ describe('Trips', () => {
   });
 
   describe('GET /', () => {
-    it('should get all trip', (done) => {
+    it('should get all trips', (done) => {
+      const trip = {
+        token: userToken,
+      };
+
       chai
         .request(app)
         .get(`${baseUrl}/`)
-        .set('access-token', token)
+        .send(trip)
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('object');
@@ -311,29 +262,15 @@ describe('Trips', () => {
   });
 
   describe('GET /', () => {
-    it('should get all trip', (done) => {
-      chai
-        .request(app)
-        .get(`${baseUrl}/?origin=bai`)
-        .set('access-token', token)
-        .end((err, res) => {
-          res.should.have.status(200);
-          res.body.should.be.a('object');
-          res.body.should.have.property('status');
-          res.body.should.have.property('data');
-          res.body.data.should.be.a('array');
-          res.body.status.should.be.equal('success');
-          done();
-        });
-    });
-  });
+    it('should get all trips', (done) => {
+      const trip = {
+        token: userToken,
+      };
 
-  describe('GET /', () => {
-    it('should get all trip', (done) => {
       chai
         .request(app)
-        .get(`${baseUrl}/?destination=gb`)
-        .set('access-token', token)
+        .get(`${baseUrl}/?search=bai`)
+        .send(trip)
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('object');

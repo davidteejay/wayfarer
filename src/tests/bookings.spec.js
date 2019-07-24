@@ -8,21 +8,21 @@ chai.use(chaiHttp);
 chai.should();
 
 const baseUrl = '/api/v1/bookings';
-const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGVjayI6dHJ1ZSwiaWF0IjoxNTYzMTk1MDY0LCJleHAiOjE1NjMyMzgyNjR9.uHCJSgljHE6BwEtq2ehWPWOMjCCqu_U7NRe9uQLMfEU';
+const adminToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJlbWFpbCI6ImNoaWJ1b2tlbV90b2x1QGhvdG1haWwuY29tIiwiZmlyc3RfbmFtZSI6IkNoaWJ1b2tlbSIsImxhc3RfbmFtZSI6Ik9ueWVrd2VsdSIsInBhc3N3b3JkIjoiMDAwMDAwMDAiLCJpc19hZG1pbiI6dHJ1ZX0sImlhdCI6MTU2Mzk5Mjg4NiwiZXhwIjoxNTY0MDM2MDg2fQ.dPc_9ifwLj8kehWpUxuW8m2AQ758Aoa9rFAQ6A4Ethw';
+const userToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoyLCJlbWFpbCI6ImNoaWJ1b2tlbTIwMDdAZ21haWwuY29tIiwiZmlyc3RfbmFtZSI6IkNoaWJ1b2tlbSIsImxhc3RfbmFtZSI6Ik9ueWVrd2VsdSIsInBhc3N3b3JkIjoiMDAwMDAwMDAiLCJpc19hZG1pbiI6ZmFsc2V9LCJpYXQiOjE1NjM5OTI5MzAsImV4cCI6MTU2NDAzNjEzMH0.LQcVEap-KY1n_US90P1PBF_PXrMA_vzw7lC-xrHFHdg';
 
 describe('Bookings', () => {
   describe('POST /', () => {
     it('should add a new booking', (done) => {
       const booking = {
         trip_id: 1,
-        user_id: 2,
         seat_number: 2,
+        token: userToken,
       };
 
       chai
         .request(app)
         .post(`${baseUrl}/`)
-        .set('access-token', token)
         .send(booking)
         .end((err, res) => {
           res.should.have.status(200);
@@ -40,13 +40,12 @@ describe('Bookings', () => {
     it('should not add a new booking', (done) => {
       const booking = {
         trip_id: 1,
-        user_id: 2,
+        token: userToken,
       };
 
       chai
         .request(app)
         .post(`${baseUrl}/`)
-        .set('access-token', token)
         .send(booking)
         .end((err, res) => {
           res.should.have.status(401);
@@ -64,14 +63,13 @@ describe('Bookings', () => {
     it('should not add a new booking', (done) => {
       const booking = {
         trip_id: 1,
-        user_id: 1,
+        token: userToken,
         seat_number: 2,
       };
 
       chai
         .request(app)
         .post(`${baseUrl}/`)
-        .set('access-token', token)
         .send(booking)
         .end((err, res) => {
           res.should.have.status(401);
@@ -88,8 +86,7 @@ describe('Bookings', () => {
   describe('POST /', () => {
     it('should not add a new booking', (done) => {
       const booking = {
-        trip_id: 1,
-        user_id: 2,
+        token: userToken,
       };
 
       chai
@@ -97,59 +94,11 @@ describe('Bookings', () => {
         .post(`${baseUrl}/`)
         .send(booking)
         .end((err, res) => {
-          res.should.have.status(401);
+          res.should.have.status(422);
           res.body.should.be.a('object');
           res.body.should.have.property('status');
           res.body.status.should.be.equal('error');
           res.body.should.have.property('error');
-          res.body.error.should.be.equal('Token Not Found');
-          done();
-        });
-    });
-  });
-
-  describe('POST /', () => {
-    it('should not add a new booking', (done) => {
-      const booking = {
-        trip_id: 1,
-        user_id: 2,
-      };
-
-      chai
-        .request(app)
-        .post(`${baseUrl}/`)
-        .set('access-token', 'eyJhbGciOiJIUzI1NiIsInR6cCI6IkpXVCJ9.eyJjaGVjayI6dHJ1ZSwiaWF0IjoxNTYyNjY1ODgxLCJleHAiOjE1NjI3MDkwODF9._tCKqBZh9oUFx95PBlRVa93CNOFbuz91ngaU-0r0RAz')
-        .send(booking)
-        .end((err, res) => {
-          res.should.have.status(401);
-          res.body.should.be.a('object');
-          res.body.should.have.property('status');
-          res.body.status.should.be.equal('error');
-          res.body.should.have.property('error');
-          res.body.error.should.be.equal('Invalid Token');
-          done();
-        });
-    });
-  });
-
-  describe('POST /', () => {
-    it('should not add a new booking', (done) => {
-      const booking = {
-        user_id: 2,
-      };
-
-      chai
-        .request(app)
-        .post(`${baseUrl}/`)
-        .set('access-token', token)
-        .send(booking)
-        .end((err, res) => {
-          res.should.have.status(401);
-          res.body.should.be.a('object');
-          res.body.should.have.property('status');
-          res.body.status.should.be.equal('error');
-          res.body.should.have.property('error');
-          res.body.error.should.be.equal('Incomplete booking data');
           done();
         });
     });
@@ -161,9 +110,8 @@ describe('Bookings', () => {
         .request(app)
         .get(`${baseUrl}/`)
         .send({
-          user_id: 2,
+          token: userToken,
         })
-        .set('access-token', token)
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('object');
@@ -182,9 +130,8 @@ describe('Bookings', () => {
         .request(app)
         .get(`${baseUrl}/`)
         .send({
-          user_id: 1,
+          token: adminToken,
         })
-        .set('access-token', token)
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('object');
@@ -197,34 +144,15 @@ describe('Bookings', () => {
     });
   });
 
-  describe('GET /', () => {
-    it('should not get all bookings', (done) => {
-      chai
-        .request(app)
-        .get(`${baseUrl}/`)
-        .set('access-token', token)
-        .end((err, res) => {
-          res.should.have.status(404);
-          res.body.should.be.a('object');
-          res.body.should.have.property('status');
-          res.body.status.should.be.equal('error');
-          res.body.should.have.property('error');
-          res.body.error.should.be.equal('User ID not specified');
-          done();
-        });
-    });
-  });
-
-  describe('PATCH /:booking_id', () => {
+  describe('DELETE /:booking_id', () => {
     it('should delete a booking', (done) => {
       const trip = {
-        user_id: 2,
+        token: userToken,
       };
 
       chai
         .request(app)
-        .patch(`${baseUrl}/1`)
-        .set('access-token', token)
+        .delete(`${baseUrl}/3`)
         .send(trip)
         .end((err, res) => {
           res.should.have.status(200);
@@ -238,16 +166,15 @@ describe('Bookings', () => {
     });
   });
 
-  describe('PATCH /:booking_id', () => {
-    it('should delete a booking', (done) => {
+  describe('DELETE /:booking_id', () => {
+    it('should not delete a booking', (done) => {
       const trip = {
-        user_id: 3,
+        token: userToken,
       };
 
       chai
         .request(app)
-        .patch(`${baseUrl}/1`)
-        .set('access-token', token)
+        .delete(`${baseUrl}/1`)
         .send(trip)
         .end((err, res) => {
           res.should.have.status(404);
