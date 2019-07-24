@@ -4,23 +4,13 @@ node_js:
 cache:
   directories:
     - "node_modules"
-env:
-  global:
-    - NODE_ENV: test
-    - PGHOST: localhost
-    - PGUSER: chi
-    - PGDATABASE: myapp_test
-    - PGPASSWORD: null
-    - PGPORT: 5432
-    - PORT: 5000
 services:
   - postgresql
-postgres:
-  adapter: postgresql
-  database: myapp_test
-  username: postgres
+env:
+  global:
+  - NODE_ENV=test
 before_script:
-  - psql -c "CREATE DATABASE myapp_test;" -U postgres
+  - psql -c 'create database wayfarer_test;' -U postgres
   - psql -c "CREATE USER chi WITH PASSWORD null;" -U postgres
   - psql -U postgres -d wayfarer_test -a -f ./db.sql
 install:
